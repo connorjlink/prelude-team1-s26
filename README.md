@@ -62,8 +62,42 @@ npm run server
 . Open the website in your browser:
 http://localhost:3000/
 
+<h2>Firestore</h2>
+
+1. Prereq: Firestore already created in Firebase Console (      
+   project prelude-2c284). Enable Firestore in Test Mode if     
+   prompted; rules file is firestore.rules:1                    
+2. Config: src/01_firebase/config_firebase.js:9 already has     
+   projectId; no env needed for test run. To use your own       
+   project, replace firebaseConfig                              
+3. Verify SDK: firebase@^9.19.0 already in package.json:16 -    
+   just npm install                                             
+4. Seed DB (one-time): copies db.json -> collections users/     
+   hotels/flights/giftcards + admins + bookings                 
+   node src/01_firebase/seed.js                                 
+   # or: npm run seed  (if script added)                        
+   # verify in Firebase Console > Firestore Data                
+   Note Node ESM requires type: module or node --experimental-  
+   modules                                                      
+5. Local dev without Firestore: app falls back to npm run       
+   server (json-server at http://localhost:8080) - Firestore    
+   errors silently fallback via try/catch in actions            
+6. Use in code:                                                 
+   import { hotelService } from "./01_firebase/firestore";      
+   await hotelService.getAll(); // or .search({city:"Gandhi     
+   Nagar"})                                                     
+   import { db } from "./01_firebase/config_firebase";          
+7. Hooks example: src/01_firebase/useFirestore.js:13 -          
+   useHotels()                                                  
+8. Troubleshooting: Permission denied -> set Rules to allow     
+   read, write: if true for testing; Missing or insufficient    
+   permissions -> check projectId matches console; no data ->   
+   re-run seeder                                                
 
 <h2>Deployment</h2>
+
+<!--TOOD-->
+<!--Below is no longer true-->
 
 This project has been deployed using Vercel at the following URL:
 

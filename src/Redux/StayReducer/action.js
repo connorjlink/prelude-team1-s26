@@ -9,6 +9,7 @@ import {
   NEW_GET_HOTELS_SUCCESS,
   DELETE_HOTEL,
 } from "./actionType";
+import { hotelService } from "../../01_firebase/firestore";
 
 export const getHotelSuccess = (payload) => {
   return { type: GET_HOTEL_SUCCESS, payload };
@@ -44,56 +45,58 @@ export const selectCity = (selectedCity) => {
   return { type: SELECTED_CITY, payload: { selectedCity } };
 };
 
-export const addHotel = (payload) => (dispatch) => {
+export const addHotel = (payload) => async (dispatch) => {
   dispatch(hotelRequest());
-
-  axios
-    .post("https://happy-sunglasses-eel.cyclic.app/hotel", payload) 
-    .then(() => {
-      dispatch(postHotelSuccess());
-    })
-    .catch((err) => {
-      dispatch(hotelFailure());
-    });
-};
-
-//https://happy-sunglasses-eel.cyclic.app/hotel?_sort=asc&_order=price&page=1&_limit=20
-export const fetchingHotels = (sort, order, page) => async (dispatch) => {
-  console.log(order, sort,page);
-  dispatch({ type: HOTEL_REQUEST });
   try {
-    const res = await axios.get(
-      `https://happy-sunglasses-eel.cyclic.app/hotel?_sort=${sort}&_order=${order}&_page=${page}&_limit=20`
-    );
-    console.log(res.data);
-    dispatch({ type: GET_HOTEL_SUCCESS, payload: res.data });
+    await hotelService.create(payload);
+    dispatch(postHotelSuccess());
   } catch (err) {
-    dispatch({ type: HOTEL_FAILURE });
-    console.log(err);
+    axios
+      .post("https://happy-sunglasses-eel.cyclic.app/hotel", payload)
+      .then(() => dispatch(postHotelSuccess()))
+      .catch(() => dispatch(hotelFailure()));
   }
 };
 
-
-
-
-
-//
+// Firestore-first, fallback to legacy API
+export const fetchingHotels = (sort, order, page) => async (dispatch) => {
+  dispatch({ type: HOTEL_REQUEST });
+  try {
+    const data = await hotelService.getAll({ orderByField: sort || "price", orderDir: order || "asc", limitN: 20 });
+    // client-side pagination slice if page provided
+    let paged = data;
+    if (page) {
+      const start = (page - 1) * 20;
+      paged = data.slice(start, start + 20);
+    }
+    dispatch({ type: GET_HOTEL_SUCCESS, payload: paged });
+  } catch (err) {
+    try {
+      const res = await axios.get(
+        `https://happy-sunglasses-eel.cyclic.app/hotel?_sort=${sort}&_order=${order}&_page=${page}&_limit=20`
+      );
+      dispatch({ type: GET_HOTEL_SUCCESS, payload: res.data });
+    } catch (e) {
+      dispatch({ type: HOTEL_FAILURE });
+      console.log(e);
+    }
+  }
+};
 
 export const DeleteHotel = (deleteId) => async (dispatch) => {
   try {
-    const res = await fetch(
-      `https://happy-sunglasses-eel.cyclic.app/hotel/${deleteId}`, 
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    let data = await res.json();
-    console.log(data);
+    await hotelService.remove(deleteId);
     dispatch(handleDeleteHotel(deleteId));
   } catch (e) {
-    console.log(e);
+    try {
+      const res = await fetch(`https://happy-sunglasses-eel.cyclic.app/hotel/${deleteId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      await res.json();
+      dispatch(handleDeleteHotel(deleteId));
+    } catch (err) {
+      console.log(err);
+    }
   }
 };

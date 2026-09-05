@@ -7,6 +7,7 @@ import {
   NEW_GET_HOTELS_SUCCESS,
   DELETE_HOTEL,
 } from "./actionType";
+import { hotelService } from "../../01_firebase/firestore";
 
 export const getHotelSuccess = (payload) => {
   return { type: GET_HOTEL_SUCCESS, payload };
@@ -35,46 +36,47 @@ export const handleDeleteHotel = (payload) => {
 
 //
 
-export const addHotel = (payload) => (dispatch) => {
+export const addHotel = (payload) => async (dispatch) => {
   dispatch(hotelRequest());
-
-  axios
-    .post("http://localhost:8080/hotel", payload) // https://makemytrip-api-data.onrender.com/hotel
-    .then(() => {
-      dispatch(postHotelSuccess());
-    })
-    .catch((err) => {
-      dispatch(hotelFailure());
-    });
+  try {
+    await hotelService.create(payload);
+    dispatch(postHotelSuccess());
+  } catch (err) {
+    // fallback to json-server
+    axios
+      .post("http://localhost:8080/hotel", payload)
+      .then(() => dispatch(postHotelSuccess()))
+      .catch(() => dispatch(hotelFailure()));
+  }
 };
 
-export const fetchingHotels = (limit) => (dispatch) => {
-  axios
-    .get(`http://localhost:8080/hotel?_limit=${limit}`) // https://makemytrip-api-data.onrender.com/hotel?_limit=${limit}
-    .then((res) => {
-      //   console.log(res.data);
-      dispatch(fetch_hotel(res.data));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+export const fetchingHotels = (limit) => async (dispatch) => {
+  try {
+    const data = await hotelService.getAll({ limitN: limit || 50 });
+    dispatch(fetch_hotel(data));
+  } catch (err) {
+    axios
+      .get(`http://localhost:8080/hotel?_limit=${limit}`)
+      .then((res) => dispatch(fetch_hotel(res.data)))
+      .catch((e) => console.log(e));
+  }
 };
 
 export const DeleteHotel = (deleteId) => async (dispatch) => {
   try {
-    const res = await fetch(
-      `http://localhost:8080/hotel/${deleteId}`, // https://makemytrip-api-data.onrender.com/hotel/${deleteId}
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    let data = await res.json();
-    console.log(data);
+    await hotelService.remove(deleteId);
     dispatch(handleDeleteHotel(deleteId));
   } catch (e) {
-    console.log(e);
+    // fallback
+    try {
+      const res = await fetch(`http://localhost:8080/hotel/${deleteId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      await res.json();
+      dispatch(handleDeleteHotel(deleteId));
+    } catch (err) {
+      console.log(err);
+    }
   }
 };

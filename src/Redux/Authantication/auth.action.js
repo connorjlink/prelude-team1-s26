@@ -9,6 +9,7 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESSFUL,
 } from "./auth.actionType";
+import { userService } from "../../01_firebase/firestore";
 
 export const login_request = () => {
   return { type: LOGIN_REQUEST };
@@ -42,28 +43,41 @@ export const handlelogout_user = () => {
 
 export const userRigister = (userData) => async (dispatch) => {
   dispatch(register_request());
-  let res = await axios
-    .post(`http://localhost:8080/users`, userData)
-    .then((res) => {
+  try {
+    // Prefer Firestore
+    const created = await userService.create(userData);
+    dispatch(register_success(created));
+  } catch (err) {
+    // Fallback to json-server for local dev without Firestore rules/creds
+    try {
+      const res = await axios.post(`http://localhost:8080/users`, userData);
       dispatch(register_success(res.data));
-      // console.log(res.data)
-    })
-    .catch((err) => {
+    } catch (e) {
       dispatch(register_error());
-    });
+    }
+  }
 };
 
 // get users
 
 export const fetch_users = (dispatch) => {
   dispatch(register_request());
-  axios
-    .get(`http://localhost:8080/users`)
-    .then((res) => {
-      dispatch(get_users(res.data));
+  userService
+    .getAll()
+    .then((data) => {
+      // Firestore returns docs with string ids; normalize to match json-server shape
+      dispatch(get_users(data));
     })
-    .catch((err) => {
-      dispatch(register_error());
+    .catch(() => {
+      // fallback to json-server
+      axios
+        .get(`http://localhost:8080/users`)
+        .then((res) => {
+          dispatch(get_users(res.data));
+        })
+        .catch((err) => {
+          dispatch(register_error());
+        });
     });
 };
 

@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAnalytics, isSupported as isAnalyticsSupported } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -13,11 +13,29 @@ const firebaseConfig = {
   storageBucket: "prelude-2c284.firebasestorage.app",
   messagingSenderId: "915506973683",
   appId: "1:915506973683:web:965361ff3c3cbe30a56086",
-  measurementId: "G-L50RXLZ4EZ"
+  measurementId: "G-L50RXLZ4EZ",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
-export default firebase_app
+// Analytics only works in browser environments (not during SSR/tests)
+let analytics = null;
+isAnalyticsSupported().then((supported) => {
+  if (supported) {
+    try {
+      analytics = getAnalytics(app);
+    } catch (e) {
+      console.warn("Analytics init failed", e);
+    }
+  }
+});
+
+// Firestore - NoSQL database
+export const db = getFirestore(app);
+
+// Auth instance - reuse across app instead of calling getAuth(app) everywhere
+export const auth = getAuth(app);
+
+export { analytics };
+export default app;
