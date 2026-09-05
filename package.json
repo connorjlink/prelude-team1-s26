@@ -1,5 +1,5 @@
 {
-  "name": "interesting-stretch-8935",
+  "name": "prelude-experian-clone",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -55,5 +55,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "allowScripts": {
+    "core-js@3.29.1": true,
+    "core-js-pure@3.29.1": true,
+    "protobufjs@7.2.3": true,
+    "protobufjs@6.11.3": true
   }
 }
