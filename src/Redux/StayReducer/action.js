@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   SELECTED_DATE_AND_CITY,
   SELECTED_CITY,
@@ -51,14 +50,12 @@ export const addHotel = (payload) => async (dispatch) => {
     await hotelService.create(payload);
     dispatch(postHotelSuccess());
   } catch (err) {
-    axios
-      .post("https://happy-sunglasses-eel.cyclic.app/hotel", payload)
-      .then(() => dispatch(postHotelSuccess()))
-      .catch(() => dispatch(hotelFailure()));
+    dispatch(hotelFailure());
+    console.error("Unable to add hotel to Firestore.", err);
   }
 };
 
-// Firestore-first, fallback to legacy API
+// Load hotels from Firestore
 export const fetchingHotels = (sort, order, page) => async (dispatch) => {
   dispatch({ type: HOTEL_REQUEST });
   try {
@@ -71,15 +68,8 @@ export const fetchingHotels = (sort, order, page) => async (dispatch) => {
     }
     dispatch({ type: GET_HOTEL_SUCCESS, payload: paged });
   } catch (err) {
-    try {
-      const res = await axios.get(
-        `https://happy-sunglasses-eel.cyclic.app/hotel?_sort=${sort}&_order=${order}&_page=${page}&_limit=20`
-      );
-      dispatch({ type: GET_HOTEL_SUCCESS, payload: res.data });
-    } catch (e) {
-      dispatch({ type: HOTEL_FAILURE });
-      console.log(e);
-    }
+    dispatch({ type: HOTEL_FAILURE });
+    console.error("Unable to load hotels from Firestore.", err);
   }
 };
 
@@ -87,16 +77,7 @@ export const DeleteHotel = (deleteId) => async (dispatch) => {
   try {
     await hotelService.remove(deleteId);
     dispatch(handleDeleteHotel(deleteId));
-  } catch (e) {
-    try {
-      const res = await fetch(`https://happy-sunglasses-eel.cyclic.app/hotel/${deleteId}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-      await res.json();
-      dispatch(handleDeleteHotel(deleteId));
-    } catch (err) {
-      console.log(err);
-    }
+  } catch (err) {
+    console.error("Unable to delete hotel from Firestore.", err);
   }
 };

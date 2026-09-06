@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import firebase_app from "../01_firebase/config_firebase";
@@ -19,6 +19,8 @@ const state = {
 
 export const Login = () => {
   const [check, setCheck] = useState(state);
+  const recaptchaVerifierRef = useRef(null);
+  const recaptchaContainerRef = useRef(null);
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth, activeUser, user } = useSelector((store) => {
@@ -45,58 +47,64 @@ export const Login = () => {
   //
 
   function onCapture() {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
+    if (recaptchaVerifierRef.current) {
+      return recaptchaVerifierRef.current;
+    }
+
+    recaptchaVerifierRef.current = new RecaptchaVerifier(
+      recaptchaContainerRef.current,
       {
-        size: "invisible",
-        callback: (response) => {
-          handleVerifyNumber();
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          // ...
-        },
+        size: "normal",
+        callback: () => {},
       },
       auth
     );
+    return recaptchaVerifierRef.current;
   }
 
-  function handleVerifyNumber() {
-    document.querySelector("#nextText").innerText = "Please wait...";
-    onCapture();
-    const phoneNumber = `+91${number}`;
-    const appVerifier = window.recaptchaVerifier;
+  async function handleVerifyNumber() {
+    const nextButton = document.querySelector("#nextText");
+    nextButton.innerText = "Please wait...";
+    const phoneNumber = `+1{number}`;
     if (number.length === 10) {
       if (exist) {
-        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-          .then((confirmationResult) => {
-            // SMS sent. Prompt user to type the code from the message, then sign the
-            // user in with confirmationResult.confirm(code).
-            window.confirmationResult = confirmationResult;
-            setCheck({ ...check, verify: true });
-            document.querySelector(
-              "#loginMesageSuccess"
-            ).innerHTML = `Otp Send To ${number} !`;
-            document.querySelector("#loginMesageError").innerHTML = "";
-            document.querySelector("#nextText").style.display = "none";
-            // ...
-          })
-          .catch((error) => {
-            // Error; SMS not sent
-            // document.querySelector("#nextText").innerText = "Server Error"
-            // ...
-          });
+        try {
+          const confirmationResult = await signInWithPhoneNumber(
+            auth,
+            phoneNumber,
+            onCapture()
+          );
+          window.confirmationResult = confirmationResult;
+          setCheck({ ...check, verify: true });
+          document.querySelector(
+            "#loginMesageSuccess"
+          ).innerHTML = `Otp sent to ${number} !`;
+          document.querySelector("#loginMesageError").innerHTML = "";
+          nextButton.style.display = "none";
+        } catch (error) {
+          console.error("Unable to send login OTP.", error);
+          nextButton.innerText = "Log In";
+          document.querySelector("#loginMesageError").innerHTML =
+            "Unable to send the verification code. Please try again.";
+          if (recaptchaVerifierRef.current) {
+            recaptchaVerifierRef.current.clear();
+            recaptchaVerifierRef.current = null;
+          }
+        }
       } else {
         document.querySelector("#loginMesageSuccess").innerHTML = ``;
         document.querySelector("#loginMesageError").innerHTML =
-          "User does not exist Please Create Your Account !";
+          "User does not exist. Please create an account.";
           setInterval(() => {
             window.location="/register"
           }, 1000);
       }
       //
     } else {
+      nextButton.innerText = "Log In";
       document.querySelector("#loginMesageSuccess").innerHTML = ``;
       document.querySelector("#loginMesageError").innerHTML =
-        "Mobile Number is Invalid !";
+        "Mobile number is invalid!";
     }
   }
 
@@ -136,18 +144,25 @@ export const Login = () => {
     if (isAuth) {
       window.location = "/";
     }
-  }, [isAuth]);
+  }, [dispatch, isAuth]);
+
+  useEffect(() => {
+    const verifier = onCapture();
+    verifier.render().catch((error) => {
+      console.error("Unable to render login reCAPTCHA.", error);
+    });
+    return () => {
+    }
+  }, []);
 
   return (
     <>
       <div className="mainLogin">
-        <div id="recaptcha-container"></div>
+        <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
         <div className="loginBx">
-        <div className="logoImgdiv"><img className="imglogo" src="https://i.postimg.cc/QxksRNkQ/expedio-Logo.jpg':'https://i.postimg.cc/fRx4D7QH/logo3.png" alt="" /></div>
-           
           <div className="loginHead">
           <hr /><hr /><hr />
-            <h1>SignIn</h1>
+            <h1>Login</h1>
           </div>
           <div className="loginInputB">
             <label htmlFor="">Enter Your Number</label>
@@ -165,7 +180,7 @@ export const Login = () => {
                 onClick={handleVerifyNumber}
                 id="nextText"
               >
-                SignIn
+                Log In
               </button>
             </span>
           </div>
@@ -189,7 +204,7 @@ export const Login = () => {
           <div className="loginTerms">
             {/* <h2>Or USE ARE BUSSINESS ACCOUNT WITH</h2>
                     <p>By proceeding, you agree to MakeMyTrip'sT&Csand Privacy</p> */}
-            <Link to="/register">Don't have an Account</Link>
+            <Link to="/register">Need to create an account?</Link>
             <Link to="/admin">Admin Login</Link>
             <div className="inpChecbx"><input className="inp" type="checkbox" /> <h2>Keep me signed in</h2></div>
             <p>Selecting this checkbox will keep you signed into your account on this device until you sign out. Do not select this on shared devices.</p>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./PriceSlider.css";
-import StayData from "./StayData";
+import { formatCurrency } from "../../utils/currency";
 
 const PriceSlider = () => {
  const [sliderValues, setSliderValues] = useState({ min: 130, max: 250 });
@@ -10,16 +10,15 @@ const PriceSlider = () => {
     setSliderValues({ ...sliderValues, [name]: parseInt(value, 10) });
   };
 
-  const formatSliderValue = (value) => `₹${value.toLocaleString()}`;
+  const formatSliderValue = (value) => formatCurrency(value);
 
   
   return (
     <div className="price-range-slider">
       <div
         className="range-bar"
-        style={{ display: "flex", flexDirection: "column" }}
       >
-        <div className="slider" style={{ marginBottom: "14%" }}>
+        <div className="slider">
           <p>Minimum Price</p>
           <input
             type="range"
@@ -56,12 +55,6 @@ const PriceSlider = () => {
           value={`${formatSliderValue(sliderValues.min)} - ${formatSliderValue(
             sliderValues.max
           )}`}
-          style={{
-            backgroundColor: `rgb(240, 230, ${Math.round(
-              (sliderValues.max / 500) * 255
-            )})`,
-            width: "50%",
-          }}
           readOnly
           className="range-text-input"
         />

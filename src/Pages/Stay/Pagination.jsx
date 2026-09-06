@@ -1,10 +1,9 @@
-import { useDispatch } from "react-redux";
 import { fetchingHotels } from "../../Redux/StayReducer/action";
+import { useDispatch } from "react-redux";
 
 
 function Pagination({current, onChange, total}) {
-
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   let btnArr = new Array(total).fill(0);
   return (
@@ -14,12 +13,7 @@ const dispatch = useDispatch();
       return (
         <button id="pagination"
         key={index + Math.random()}
-        style={{
-          margin:"0.5rem",
-          padding: "0.5rem",
-          backgroundColor: current === index + 1 ? "green" : "teal",
-          borderRadius: "5px",
-        }}
+        className={current === index + 1 ? "pagination-button is-active" : "pagination-button"}
         onClick={()=> {
           dispatch(fetchingHotels("", "",index+1));
           onChange(index +1)}}

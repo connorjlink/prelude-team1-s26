@@ -1,0 +1,134 @@
+.flight-results-shell {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  width: min(1180px, calc(100% - 48px));
+  margin: 36px auto 70px;
+}
+
+.flight-filter-panel,
+.flight-results-panel {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.flight-filter-panel {
+  position: sticky;
+  top: 20px;
+  color: var(--muted);
+}
+
+.flight-filter-panel h1 {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.flight-filter-group {
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.flight-filter-group h5 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.flight-filter-group .chakra-radio__label {
+  font-size: 12px;
+}
+
+.flight-filter-group .chakra-radio__control {
+  border-color: var(--border-strong);
+}
+
+.flight-filter-group .chakra-radio[data-checked] .chakra-radio__control {
+  color: #fff;
+  background: var(--coral);
+  border-color: var(--coral);
+}
+
+.flight-pagination {
+  margin-bottom: 20px;
+}
+
+.flight-pagination button {
+  min-height: 40px;
+  color: #fff;
+  background: var(--coral) !important;
+  border-radius: 7px !important;
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.flight-result-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  min-height: 112px;
+  margin: 0 0 14px;
+  padding: 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(37, 76, 58, .06);
+  text-align: center;
+}
+
+.flight-result-card h1,
+.flight-result-card h3,
+.flight-result-card p {
+  margin: 0;
+}
+
+.flight-result-card h1 {
+  font-size: 14px;
+}
+
+.flight-result-card h3 {
+  font-size: 13px;
+}
+
+.flight-result-card .flight-card-section h3:first-child {
+  color: var(--muted-light);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.flight-result-card .flight-card-section b {
+  font-size: 12px;
+}
+
+.flight-results-message {
+  margin: 30px 0 0;
+  padding: 18px;
+  color: var(--muted);
+  background: var(--soft-green);
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .flight-results-shell {
+    grid-template-columns: 1fr;
+    width: min(100% - 28px, 1180px);
+  }
+
+  .flight-filter-panel {
+    position: static;
+  }
+
+  .flight-result-card {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

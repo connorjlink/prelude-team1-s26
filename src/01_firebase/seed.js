@@ -26,6 +26,7 @@ const COLLECTION_MAP = {
   users: "users",
   hotel: "hotels",
   flight: "flights",
+  Things_todo: "things_todo",
   giftcards: "giftcards",
   hotelcart: "hotelcart",
   flightcart: "flightcart",

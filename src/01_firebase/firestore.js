@@ -1,6 +1,6 @@
 /**
  * Firestore service layer
- * Covers collections: users, admins, hotels, flights, bookings, giftcards, hotelcart, flightcart
+ * Covers collections: users, admins, hotels, flights, things_todo, bookings, giftcards, hotelcart, flightcart
  * Provides CRUD + query helpers + real-time listeners
  * 
  * Usage:
@@ -38,6 +38,7 @@ export const COLLECTIONS = {
   ADMINS: "admins",
   HOTELS: "hotels", // canonical name (migrated from json-server "hotel")
   FLIGHTS: "flights", // canonical name (migrated from "flight")
+  THINGS_TODO: "things_todo",
   HOTEL_CART: "hotelcart",
   FLIGHT_CART: "flightcart",
   BOOKINGS: "bookings", // unified bookings for hotels+flights
@@ -231,6 +232,20 @@ export const flightService = {
   update: (id, data) => update(COLLECTIONS.FLIGHTS, id, data),
   remove: (id) => remove(COLLECTIONS.FLIGHTS, id),
   subscribe: (cb, opts) => subscribe(COLLECTIONS.FLIGHTS, cb, opts),
+};
+
+// ---------------------------------------------------------------------------
+// Things to do
+// ---------------------------------------------------------------------------
+export const thingsToDoService = {
+  collection: COLLECTIONS.THINGS_TODO,
+  getAll: (opts) => getAll(COLLECTIONS.THINGS_TODO, opts),
+  search: async ({ place, limitN = 50 } = {}) => {
+    const constraints = [];
+    if (place) constraints.push(where("place", "==", place));
+    if (limitN) constraints.push(limit(limitN));
+    return getAll(COLLECTIONS.THINGS_TODO, { queries: constraints });
+  },
 };
 
 // ---------------------------------------------------------------------------

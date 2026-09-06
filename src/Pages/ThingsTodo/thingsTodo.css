@@ -1,0 +1,44 @@
+.things-todo-page {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 50px 0 80px;
+}
+
+.things-todo-grid {
+  width: 100%;
+}
+
+.things-todo-card {
+  overflow: hidden;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 26px rgba(37, 76, 58, .08);
+}
+
+.things-todo-card img {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.things-todo-card-body {
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+}
+
+.things-todo-card-body h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.things-todo-card-body p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}

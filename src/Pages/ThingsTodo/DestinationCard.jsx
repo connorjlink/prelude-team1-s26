@@ -6,6 +6,7 @@ import {
   Image,
   
 } from '@chakra-ui/react';
+import { formatCurrency } from "../../utils/currency";
 
 
 
@@ -22,14 +23,12 @@ export default function DestinationCard({image,title,price,rating,place}){
   }
 
   return (
-    <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
-      <Image src={image} alt="" width="100%" height="60%"/>
+    <Box className="things-todo-card">
+      <Image src={image} alt={title} />
 
-      <Box p='6'>
+      <Box className="things-todo-card-body">
         <Box display='flex' alignItems='baseline'>
-          <Badge borderRadius='full' px='2' colorScheme='teal'>
-            New
-          </Badge>
+          <Badge borderRadius='full' px='2' colorScheme='orange'>Featured</Badge>
           <Box
             color='gray.500'
             fontWeight='semibold'
@@ -42,18 +41,12 @@ export default function DestinationCard({image,title,price,rating,place}){
           </Box>
         </Box>
 
-        <Box
-          mt='1'
-          fontWeight='semibold'
-          as='h4'
-          lineHeight='tight'
-          noOfLines={1}
-        >
+        <Box as='h3'>
           {title}
         </Box>
 
-        <Box>
-          Rs {price}/-
+        <Box color="var(--coral)" fontWeight="700">
+          {formatCurrency(price)}
           <Box as='span' color='gray.600' fontSize='sm'>
             / wk
           </Box>

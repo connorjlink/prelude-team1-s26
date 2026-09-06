@@ -85,8 +85,8 @@ export const AllHotels = () => {
                   : ele.name}
               </span>
               <span>{ele.place}</span>
-              <span>Rs.{ele.taxes}</span>
-              <span>Rs.{ele.price}</span>
+              <span>${ele.taxes}</span>
+              <span>${ele.price}</span>
               <span>{ele.number}</span>
               <span>
                 <button onClick={() => handleDeleteHotel(ele.id)}>

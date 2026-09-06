@@ -2,6 +2,7 @@ import { Box, Image, Flex, Button } from "@chakra-ui/react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "../../utils/currency";
 
 export default function FlightCard({ data }) {
   const { id, airline, from, to, departure, arrival, price, totalTime } = data;
@@ -23,33 +24,9 @@ export default function FlightCard({ data }) {
 
   
 
-  const Booknow = {
-    marginTop: "3%",
-    // width:"164px",
-    padding: "15px",
-    height: "43px",
-    background: "teal",
-    color: " #FFFFFF",
-    bordeRadius: "0.5rem",
-    position: "relative",
-    marginBottom: "1rem",
-  };
-
   return (
-    <Box
-      display={"flex"}
-      gap="20px"
+    <Box className="flight-result-card"
       key={id}
-      height="100px"
-      width={"80%"}
-      boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
-      padding="10px"
-      margin="auto"
-      justifyContent="space-around"
-      alignItems={"center"}
-      borderRadius="10px"
-      marginBottom={"20px"}
-      textAlign="center"
     >
       <Box gap={"30px"}>
         <Image
@@ -59,26 +36,26 @@ export default function FlightCard({ data }) {
         />
         <h1>{airline}</h1>
       </Box>
-      <Flex display={"flex"} flexDirection="column">
+      <Flex className="flight-card-section" display={"flex"} flexDirection="column">
         <h3 style={{ fontSize: "10px", fontWeight: "bold" }}>Departure</h3>
         <h3>{departure}</h3>
         <b>{from} </b>
       </Flex>
-      <Flex display={"flex"} flexDirection="column">
+      <Flex className="flight-card-section" display={"flex"} flexDirection="column">
         <h3 style={{ fontSize: "10px", fontWeight: "bold" }}>Arrival</h3>
         <h3>{arrival}</h3>
         <b style={{ fontSize: "14px" }}>{to} </b>
       </Flex>
-      <Flex display={"flex"} flexDirection="column">
+      <Flex className="flight-card-section" display={"flex"} flexDirection="column">
         <h3>Duation</h3>
         <b>{totalTime}</b>
       </Flex>
-      <Flex display={"flex"} flexDirection="column">
+      <Flex className="flight-card-section" display={"flex"} flexDirection="column">
         <h3>Price</h3>
-        <b>{price}</b>
+        <b>{formatCurrency(price)}</b>
       </Flex>
       <Link to={"/checkout"}>
-        <Button style={Booknow} onClick={handleClick}>
+        <Button className="accent-button" onClick={handleClick}>
           Book Now
         </Button>
       </Link>

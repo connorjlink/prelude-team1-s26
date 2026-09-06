@@ -1,50 +1,63 @@
 .date-pickers {
-    display: flex;
-    justify-content: space-between;
-    gap:20px;
-    
-   
+  display: flex;
+  gap: 12px;
+  width: 100%;
   }
   
   .date-picker-wrapper {
-    display: inline-block;
-    border: 1px solid rgb(114, 114, 114);
-    border-radius: 20px;
-    padding: 1rem;
-    
+    display: flex;
+    flex: 1;
+    width: auto !important;
+    height: 44px !important;
+    align-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 0 12px;
   }
   
   .date-picker-input-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: relative;
+    flex: 1;
+  }
+
+  .date-picker-input-container > div {
+    display: none;
   }
   
   .date-picker-input {
     
-    padding: 0.5rem;
-    border: none;
-    border-bottom: 1px solid black;
+    padding: 4px;
+    width: 100%;
+    min-width: 0;
+    padding: 4px 8px;
+    color: var(--ink);
+    border: 0;
     text-align: center;
-    font-size: 1.2rem;
-    margin-left: 1rem;
-   width:80px;
-   height:10px
+    font-size: 12px;
   }
   
   .check-in  .smaller-text {
-    font-size: 1px;
-    color: grey;
+    color: var(--muted-light);
+    font-size: 10px;
   }
   
   .selected-date {
-    margin-top: 0.5rem;
+    display: none;
   }
   
   .selected-date .bigger-text {
-    font-size: 1.2rem;
+    color: var(--ink);
+    font-size: 14px;
     font-weight: bold;
+  }
+
+  @media (max-width: 620px) {
+    .date-pickers {
+      flex-direction: column;
+    }
   }
 
   

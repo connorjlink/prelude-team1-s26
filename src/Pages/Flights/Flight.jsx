@@ -4,7 +4,6 @@ import React from "react";
 import { Button,} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import "./homePage.css";
-import styles from "../Stay/Stay.module.css";
 // import SideBar from "./SideBar";
 
 const initialState = {
@@ -35,27 +34,23 @@ const swapValuehandler = () => {
 
   return (
     <div>
-      <div className="homeTop" style={{ marginBottom: "100px" }}>
+      <div className="homeTop flight-search-panel" style={{ marginBottom: "30px" }}>
         <div className="homeTopCard">
-          <div className="secondHeader"></div>
-          {/*  */}
-          <div className="homeInputBx">
-            <div>
+          <h2 className="search-panel-title">Search flights</h2>
+          <div className="homeInputBx flight-type-tabs">
+            <div className="flight-type-options">
               <div className="homeInputs">
                 <input name="type" type="radio" id="inputs" />
-                <label for="inputs">ONE WAY</label>
+                <label htmlFor="inputs">ONE WAY</label>
               </div>
               <div className="homeInputs">
                 <input name="type" type="radio" id="inputs2" />
-                <label for="inputs2">ROUND TRIP</label>
+                <label htmlFor="inputs2">ROUND TRIP</label>
               </div>
               <div className="homeInputs">
                 <input name="type" type="radio" id="inputs3" />
-                <label for="inputs3">MULTI CITY</label>
+                <label htmlFor="inputs3">MULTI CITY</label>
               </div>
-            </div>
-            <div>
-            
             </div>
           </div>
           {/*  */}
@@ -67,7 +62,6 @@ const swapValuehandler = () => {
               <select
                 name="from"
                 id="from"
-                style={{ width: "200px" }}
                 value={PassengerData.from}
                 onChange={handleChange}
               >
@@ -90,7 +84,6 @@ const swapValuehandler = () => {
               <select
                 name="to"
                 id="fromto"
-                style={{ width: "200px" }}
                 value={PassengerData.to}
                 onChange={handleChange}
               >
@@ -122,14 +115,23 @@ const swapValuehandler = () => {
           </div>
           <div className="homeSearchButtonBx">
           <Button
-            colorScheme="blue"
+            colorScheme="orange"
             size="lg"
-            className={styles["SearchBtn1"]}
-            style={{margin:"auto",}}
+            className="accent-button"
             onClick={handleClick}
             
           >
-            <Link to={{ pathname: '/flight' }}>Search</Link>
+            <Link
+              to={{
+                pathname: "/flight",
+                search: new URLSearchParams({
+                  from: PassengerData.from,
+                  to: PassengerData.to,
+                }).toString(),
+              }}
+            >
+              Search
+            </Link>
           
           </Button >
             {/* <button >Search</button> */}

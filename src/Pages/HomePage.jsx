@@ -8,7 +8,7 @@ import ManSeeBanner from "../Components/HomePageComponents/ManSeeBanner";
 
 const HomePage = () => {
   return (
-    <div>
+    <div className="home-page">
       <MainInputBox />
       <Banner1 />
       <ImageQRCodeBanner />

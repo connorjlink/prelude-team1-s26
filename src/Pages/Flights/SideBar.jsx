@@ -11,8 +11,9 @@ import {
 } from "@chakra-ui/react";
 import FlightList from "./FlightList";
 import { useState } from "react";
+import "./flightResults.css";
 
-const SideBar = () => {
+const SideBar = ({ from, to }) => {
   const [priceValue, setPriceValue] = useState(8);
   const [classes, setClasses] = useState("");
   const [page, setPage] = useState(1);
@@ -23,7 +24,7 @@ const SideBar = () => {
     // width:"164px",
     padding:"15px",
     height: "43px",
-    background: "#3662D8",
+    background: "var(--coral)",
     color:" #FFFFFF",
     bordeRadius: "0.5rem",
     position: "relative",
@@ -31,40 +32,28 @@ const SideBar = () => {
 }
 
   return (
-      <Box
-        display={"flex"}
-        padding="0px 40px"
-        gap={"30px"}
-        width="100%"
-        marginBottom={"100px"}
-      >
+      <Box className="flight-results-shell">
         <Box
-          width={"25%"}
-          boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
-          height={"auto"}
-          padding="20px"
-          textAlign={"center"}
+          className="flight-filter-panel"
         >
-          <h1 style={{ fontSize: "20px", fontWeight: "bold" }}>
-            Sorting & Filtering
-          </h1>
+          <h1>Sort and filter</h1>
 
-          <Box>
-            <Heading as="h5" size="sm" m="3">
+          <Box className="flight-filter-group">
+            <Heading as="h5">
               Price Per Trip
             </Heading>
             <RadioGroup onChange={setPriceValue} value={priceValue}>
               <Stack direction="column">
-                <Radio value="5">₹ 4000 - ₹ 5000</Radio>
-                <Radio value="6">₹ 5000 - ₹ 6000</Radio>
-                <Radio value="7">₹ 6000 - ₹ 7000</Radio>
-                <Radio value="8">₹ 7000 - ₹ 8000</Radio>
+                <Radio value="5">$4,000 - $5,000</Radio>
+                <Radio value="6">$5,000 - $6,000</Radio>
+                <Radio value="7">$6,000 - $7,000</Radio>
+                <Radio value="8">$7,000 - $8,000</Radio>
               </Stack>
             </RadioGroup>
           </Box>
 
-          <Box>
-            <Heading as="h5" size="sm" m="3">
+          <Box className="flight-filter-group">
+            <Heading as="h5">
               Filter Class
             </Heading>
             <RadioGroup onChange={setClasses} value={classes}>
@@ -76,8 +65,8 @@ const SideBar = () => {
             </RadioGroup>
           </Box>
 
-          <Box>
-            <Heading as="h5" size="sm" m="3">
+          <Box className="flight-filter-group">
+            <Heading as="h5">
               Packaging
             </Heading>
             <RadioGroup onChange={setpackaging} value={Packaging}>
@@ -89,12 +78,7 @@ const SideBar = () => {
             </RadioGroup>
           </Box>
         </Box>
-        <Box
-          width={"80%"}
-          boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
-          height={"auto"}
-          padding="20px"
-        >
+        <Box className="flight-results-panel">
           <Image
             src="https://mmt.servedbyadbutler.com/getad.img/;libID=3737167"
             width={"90%"}
@@ -103,7 +87,7 @@ const SideBar = () => {
           />
 
           {/* Pagination Part UI Start */}
-          <Stack spacing={4} direction='row' align='center'>
+          <Stack className="flight-pagination" spacing={4} direction='row' align='center'>
 
           {/* <Flex m="5" align="center"> */}
             <Button 
@@ -127,7 +111,7 @@ const SideBar = () => {
               </Stack>
           {/* Pagination Part UI End */}
 
-          <FlightList page={page} priceValue={priceValue} />
+          <FlightList page={page} priceValue={priceValue} from={from} to={to} />
         </Box>
       </Box>
   );

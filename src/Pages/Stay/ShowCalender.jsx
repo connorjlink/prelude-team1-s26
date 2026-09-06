@@ -41,9 +41,6 @@ function ShowCalender() {
           <label className="check-in-date">Check-in Date:</label>
 
           <div className={styles["date-picker-input-container"]}>
-            <div className={checkInDate ? styles["smaller-text"] : ""  } >
-              check in
-            </div>
             <DatePicker
               selected={checkInDate}
               onChange={handleCheckInDateChange}
@@ -51,8 +48,6 @@ function ShowCalender() {
               placeholderText=" "
               className={styles["date-picker-input"]}
               calendarClassName={styles["date-picker-calendar"]}
-          style={{ width:"80%", height:"60px"}}
-
             />
           </div>
         </div>
@@ -75,9 +70,6 @@ function ShowCalender() {
         >
           <label className="check-out-date">Check-out Date:</label>
           <div className={styles["date-picker-input-container"]}>
-            <div className={checkOutDate ? styles["smaller-text"] : ""} >
-              check out
-            </div>
             <DatePicker
               selected={checkOutDate}
               onChange={handleCheckOutDateChange}

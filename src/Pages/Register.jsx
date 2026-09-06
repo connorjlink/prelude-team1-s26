@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import firebase_app from "../01_firebase/config_firebase";
@@ -23,6 +23,8 @@ const state = {
 
 export const Register = () => {
   const [check, setCheck] = useState(state);
+  const recaptchaVerifierRef = useRef(null);
+  const recaptchaContainerRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let exist = false;
@@ -62,56 +64,62 @@ export const Register = () => {
 
   // oonCapture
   function onCapture() {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
+    if (recaptchaVerifierRef.current) {
+      return recaptchaVerifierRef.current;
+    }
+
+    recaptchaVerifierRef.current = new RecaptchaVerifier(
+      recaptchaContainerRef.current,
       {
-        size: "invisible",
-        callback: (response) => {
-          handleVerifyNumber();
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          // ...
-        },
+        size: "normal",
+        callback: () => {},
       },
       auth
     );
+    return recaptchaVerifierRef.current;
   }
 
   //   Verify button
-  function handleVerifyNumber() {
-    document.querySelector("#nextButton").innerText = "Please wait...";
-    onCapture();
-    const phoneNumber = `+91${number}`;
-    const appVerifier = window.recaptchaVerifier;
+  async function handleVerifyNumber() {
+    const nextButton = document.querySelector("#nextButton");
+    nextButton.innerText = "Please wait...";
+    const phoneNumber = `+1${number}`;
     if (number.length === 10) {
       if (exist) {
         document.querySelector("#loginMesageError").innerHTML =
-          "User Alredy exist";
+          "User already exists";
         document.querySelector("#loginMesageSuccess").innerHTML = ``;
       } else {
-        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-          .then((confirmationResult) => {
-            // SMS sent. Prompt user to type the code from the message, then sign the
-            // user in with confirmationResult.confirm(code).
-            window.confirmationResult = confirmationResult;
-            setCheck({ ...check, verify: true });
-            document.querySelector(
-              "#loginMesageSuccess"
-            ).innerHTML = `Otp Send To ${number} !`;
-            document.querySelector("#loginMesageError").innerHTML = "";
-            document.querySelector("#nextButton").style.display = "none";
-            // ...
-          })
-          .catch((error) => {
-            // Error; SMS not sent
-            // document.querySelector("#nextButton").innerText = 'Server Error'
-            // ...
-          });
+        try {
+          const confirmationResult = await signInWithPhoneNumber(
+            auth,
+            phoneNumber,
+            onCapture()
+          );
+          window.confirmationResult = confirmationResult;
+          setCheck({ ...check, verify: true });
+          document.querySelector(
+            "#loginMesageSuccess"
+          ).innerHTML = `Otp sent to ${number}!`;
+          document.querySelector("#loginMesageError").innerHTML = "";
+          nextButton.style.display = "none";
+        } catch (error) {
+          console.error("Unable to send registration OTP.", error);
+          nextButton.innerText = "Next";
+          document.querySelector("#loginMesageError").innerHTML =
+            "Unable to send the verification code. Please try again.";
+          if (recaptchaVerifierRef.current) {
+            recaptchaVerifierRef.current.clear();
+            recaptchaVerifierRef.current = null;
+          }
+        }
       }
       //
     } else {
+      nextButton.innerText = "Next";
       document.querySelector("#loginMesageSuccess").innerHTML = ``;
       document.querySelector("#loginMesageError").innerHTML =
-        "Mobile Number is Invalid !";
+        "Phone number is invalid!";
     }
   }
 
@@ -125,7 +133,7 @@ export const Register = () => {
         setCheck({ ...check, otpVerify: true });
         document.querySelector(
           "#loginMesageSuccess"
-        ).innerHTML = `Verifyed Successful`;
+        ).innerHTML = `Verification successful`;
         document.querySelector("#loginMesageError").innerHTML = "";
         document.querySelector("#loginNumber").style.display = "none";
         document.querySelector("#loginOtp").style.display = "none";
@@ -147,15 +155,19 @@ export const Register = () => {
 
   useEffect(() => {
     dispatch(fetch_users);
+    const verifier = onCapture();
+    verifier.render().catch((error) => {
+      console.error("Unable to render registration reCAPTCHA.", error);
+    });
+    return () => {
+    }
   }, []);
 
   return (
     <>
       <div className="mainLogin">
-        <div id="recaptcha-container"></div>
+        <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
         <div className="loginBx">
-        <div className="logoImgdivReg"><img className="imglogoReg" src="https://i.postimg.cc/QxksRNkQ/expedio-Logo.jpg':'https://i.postimg.cc/fRx4D7QH/logo3.png" alt="" /></div>
-
           <div className="loginHead">
           <hr /><hr /><hr />
 

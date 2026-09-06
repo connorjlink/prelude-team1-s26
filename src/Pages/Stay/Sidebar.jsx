@@ -35,9 +35,10 @@ const handlePriceChange = (e) => {
   }, [sort, order]);
 
   return (
-    <div>
-      <h3>Filter By Price</h3>
-      <div onChange={handlePriceChange} >
+    <div className="stay-filter">
+      <h3>Sort and filter</h3>
+      <div className="stay-filter-group" onChange={handlePriceChange} >
+        <h4>Price</h4>
         <input
           type="radio"
           name="price"
@@ -56,8 +57,8 @@ const handlePriceChange = (e) => {
       </div>
       <br />
       <br />
-      <h3>Filter By Rating</h3>
-      <div onChange={handleRatingChange}>
+      <div className="stay-filter-group" onChange={handleRatingChange}>
+        <h4>Rating</h4>
         <input
           type="radio"
           name="rating"
