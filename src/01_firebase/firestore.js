@@ -235,7 +235,7 @@ export const flightService = {
 };
 
 // ---------------------------------------------------------------------------
-// Things to do
+// Popular Attractions
 // ---------------------------------------------------------------------------
 export const thingsToDoService = {
   collection: COLLECTIONS.THINGS_TODO,

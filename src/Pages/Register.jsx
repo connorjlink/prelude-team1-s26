@@ -47,7 +47,7 @@ export const Register = () => {
   }
 
   //  capture
-  const handleRegisterUser = () => {
+  const handleRegisterUser = async () => {
     let newObj = {
       number,
       user_name,
@@ -57,7 +57,7 @@ export const Register = () => {
       gender: "",
       marital_status: null,
     };
-    dispatch(userRigister(newObj));
+    await dispatch(userRigister(newObj));
     setCheck(state);
     window.location = "/login";
   };

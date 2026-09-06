@@ -8,7 +8,7 @@ const footerGroups = [
     links: [
       ["Stays", "/stay"],
       ["Flights", "/flight"],
-      ["Things to do", "/ThingsToDo"],
+      ["Popular Attractions", "/ThingsToDo"],
     ],
   },
   {

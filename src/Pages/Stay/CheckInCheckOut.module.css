@@ -23,20 +23,19 @@
     flex: 1;
   }
 
-  .date-picker-input-container > div {
-    display: none;
-  }
-  
-  .date-picker-input {
-    
-    padding: 4px;
-    width: 100%;
-    min-width: 0;
-    padding: 4px 8px;
+    .date-picker-input {
+      width: 100%;
+      min-width: 0;
+      padding: 4px 8px;
     color: var(--ink);
     border: 0;
     text-align: center;
     font-size: 12px;
+  }
+
+  .date-picker-input-container :global(.react-datepicker-wrapper) {
+    display: block;
+    width: 100%;
   }
   
   .check-in  .smaller-text {

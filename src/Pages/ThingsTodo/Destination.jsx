@@ -21,9 +21,9 @@ export const Destination = () => {
         if (active) setPlaces(results);
       } catch (requestError) {
         if (!active) return;
-        console.error("Unable to load things to do from Firestore.", requestError);
+        console.error("Unable to load Popular Attractions from Firestore.", requestError);
         setPlaces([]);
-        setError("Things to do are temporarily unavailable. Please try again.");
+        setError("Popular Attractions are temporarily unavailable. Please try again.");
       }
     }
 
@@ -35,7 +35,7 @@ export const Destination = () => {
 
   return (
     <div className="things-todo-page">
-      <h1 className="search-panel-title">Things to do{place ? ` in ${place}` : ""}</h1>
+      <h1 className="search-panel-title">Popular Attractions{place ? ` in ${place}` : ""}</h1>
       {error ? (
         <p className="flight-results-message">{error}</p>
       ) : (

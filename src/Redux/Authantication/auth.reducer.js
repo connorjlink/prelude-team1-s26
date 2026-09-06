@@ -13,7 +13,7 @@ export const LoginReducer = (state = initialState, {type, payload}) => {
 
     switch(type){
         case LOGIN_REQUEST : return {...state, isLoading: state.isLoading = true}
-        case LOGIN_SUCCESSFUL : return {...state, isAuth : state.isAuth = true ,isLoading: state.isLoading = false, activeUser: state.activeUser= payload}
+        case LOGIN_SUCCESSFUL : return {...state, isAuth: true, isLoading: false, activeUser: payload}
         case LOGIN_ERROR : return {...state, isLoading: state.isLoading = false, isError: state.isError = true}
         
         case REGISTER_REQUEST : return {...state, isLoading: state.isLoading = true}
@@ -22,7 +22,7 @@ export const LoginReducer = (state = initialState, {type, payload}) => {
 
         case GET_USERS : return {...state, isLoading: state.isLoading = false, isError: state.isError= false, user: state.user = payload}
 
-        case LOGOUT_USER : return {...state, isLoading: state.isLoading = false, isError: state.isError= false, activeUser: state.activeUser = {}, isAuth: state.isActive = false}
+        case LOGOUT_USER : return {...state, isLoading: false, isError: false, activeUser: {}, isAuth: false}
 
         default: return state
     }

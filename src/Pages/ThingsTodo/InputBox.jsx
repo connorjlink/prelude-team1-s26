@@ -16,7 +16,7 @@ export const InputBox =()=>{
 
   return (
     <Box className="things-search">
-      <h2 className="search-panel-title">Find things to do</h2>
+      <h2 className="search-panel-title">Find Popular Attractions</h2>
       <div className="things-search-controls">
         <label className="things-city-field">
           <AiTwotoneEnvironment aria-hidden="true" />

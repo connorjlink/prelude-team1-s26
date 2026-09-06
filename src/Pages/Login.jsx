@@ -7,6 +7,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
+import { userService } from "../01_firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { fetch_users, login_user } from "../Redux/Authantication/auth.action";
 
@@ -65,9 +66,17 @@ export const Login = () => {
   async function handleVerifyNumber() {
     const nextButton = document.querySelector("#nextText");
     nextButton.innerText = "Please wait...";
-    const phoneNumber = `+1{number}`;
+    const normalizedNumber = String(number).replace(/\D/g, "");
+    const phoneNumber = `+1${normalizedNumber}`;
     if (number.length === 10) {
-      if (exist) {
+      let matchedUser = data.number ? data : null;
+      try {
+        matchedUser = matchedUser || await userService.getByPhone(normalizedNumber);
+      } catch (error) {
+        console.error("Unable to find the user in Firestore.", error);
+      }
+      if (matchedUser) {
+        data = matchedUser;
         try {
           const confirmationResult = await signInWithPhoneNumber(
             auth,
@@ -78,7 +87,7 @@ export const Login = () => {
           setCheck({ ...check, verify: true });
           document.querySelector(
             "#loginMesageSuccess"
-          ).innerHTML = `Otp sent to ${number} !`;
+          ).innerHTML = `Otp sent to ${number}!`;
           document.querySelector("#loginMesageError").innerHTML = "";
           nextButton.style.display = "none";
         } catch (error) {
@@ -104,7 +113,7 @@ export const Login = () => {
       nextButton.innerText = "Log In";
       document.querySelector("#loginMesageSuccess").innerHTML = ``;
       document.querySelector("#loginMesageError").innerHTML =
-        "Mobile number is invalid!";
+        "Phone number is invalid!";
     }
   }
 
@@ -118,7 +127,7 @@ export const Login = () => {
 
         document.querySelector(
           "#loginMesageSuccess"
-        ).innerHTML = `Verifyed Successful`;
+        ).innerHTML = `Verification successful`;
         document.querySelector("#loginMesageError").innerHTML = "";
 
         dispatch(login_user(data));
