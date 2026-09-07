@@ -53,17 +53,36 @@
 }
 
 .flight-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 20px;
 }
 
 .flight-pagination button {
+  min-width: 34px;
   min-height: 40px;
-  color: #fff;
-  background: var(--coral) !important;
-  border-radius: 7px !important;
+  margin: 4px;
+  padding: 8px 10px;
+  color: var(--ink);
+  background: var(--surface) !important;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px !important;
   font-family: "DM Sans", sans-serif;
   font-size: 12px;
   font-weight: 600;
+}
+
+.flight-pagination button:hover,
+.flight-pagination button.is-current-page {
+  color: #fff;
+  background: var(--coral) !important;
+  border-color: var(--coral);
+}
+
+.flight-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
 }
 
 .flight-result-card {

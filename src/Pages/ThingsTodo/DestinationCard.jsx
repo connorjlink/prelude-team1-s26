@@ -7,10 +7,11 @@ import {
   
 } from '@chakra-ui/react';
 import { formatCurrency } from "../../utils/currency";
+import { Button } from "@chakra-ui/react";
 
 
 
-export default function DestinationCard({image,title,price,rating,place}){
+export default function DestinationCard({image,title,price,rating,place,onAdd}){
   const property = {
     imageUrl: 'https://bit.ly/2Z4KKcF',
     imageAlt: 'Rear view of modern home with pool',
@@ -57,6 +58,7 @@ export default function DestinationCard({image,title,price,rating,place}){
           <Box as='span' ml='2' color='gray.600' fontSize='sm'>
             {rating} reviews
           </Box>
+          <Button className="accent-button" size="sm" onClick={onAdd}>Add to cart</Button>
         </Box>
       </Box>
     </Box>

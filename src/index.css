@@ -67,3 +67,49 @@ a:focus-visible {
 .chakra-select {
   border-color: var(--border-strong);
 }
+
+/* Keep Chakra notifications aligned with the compact Prelude controls. */
+.chakra-toast__inner {
+  max-width: min(360px, calc(100vw - 32px));
+}
+
+.chakra-toast__inner .chakra-alert {
+  min-height: 0;
+  padding: 12px 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--coral);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(23, 51, 47, .12);
+  font-family: "DM Sans", sans-serif;
+}
+
+.chakra-toast__inner .chakra-alert__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin-inline-end: 10px;
+  font-size: 18px;
+}
+
+.chakra-toast__inner .chakra-alert__title,
+.chakra-toast__inner .chakra-alert__desc {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.chakra-toast__inner .chakra-alert__title {
+  font-weight: 700;
+}
+
+.chakra-toast__inner .chakra-alert__desc {
+  color: var(--muted);
+}
+
+.chakra-toast__inner .chakra-alert__closeButton {
+  position: static;
+  width: 24px;
+  height: 24px;
+  margin-inline-start: 8px;
+}

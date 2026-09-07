@@ -7,6 +7,7 @@ import "font-awesome/css/font-awesome.min.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 import { DeleteHotel, fetchingHotels, updateHotel } from "../../Redux/AdminHotel/action";
+import AdminNav from "./AdminNav";
 
 export const AllHotels = () => {
   const dispatch = useDispatch();
@@ -57,15 +58,7 @@ export const AllHotels = () => {
     <>
       <ToastContainer />
       <div className="adminProductMain">
-        <div className="adminSideBr">
-          <h1><Link to={"/admin"}>Home</Link></h1>
-          <h1><Link to={"/admin/adminflight"}>Add Flight</Link></h1>
-          <h1><Link to={"/admin/adminstay"}>Add Stays</Link></h1>
-          <h1><Link to={"/admin/products"}>All Flights</Link></h1>
-          <h1><Link to={"/admin/hotels"}>All Hotels</Link></h1>
-          <h1><Link to={"/"}>Log out</Link></h1>
-
-        </div>
+        <AdminNav />
         <div className="adminProductbox">
           <div className="filterProdcut">
             <input placeholder="Search Flight" type="text" />

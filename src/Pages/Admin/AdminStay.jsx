@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { addHotel } from "../../Redux/AdminHotel/action";
 import { useDispatch } from "react-redux";
+import AdminNav from "./AdminNav";
 
 let initialState = {
   image: "",
@@ -32,15 +33,7 @@ export const AdminStay = () => {
   return (
     <>
       <div className="adminFlightMai">
-        <div className="adminSideBr">
-        <h1><Link to={"/admin"}>Home</Link></h1>
-          <h1><Link to={"/admin/adminflight"}>Add Flight</Link></h1>
-          <h1><Link to={"/admin/adminstay"}>Add Stays</Link></h1>
-          <h1><Link to={"/admin/products"}>All Flights</Link></h1>
-          <h1><Link to={"/admin/hotels"}>All Hotels</Link></h1>
-          <h1><Link to={"/"}>Log out</Link></h1>
-
-        </div>
+        <AdminNav />
         <div className="adminFlightBox">
           <div className="adminHead">
             <h2>Admin Panel for Hotel</h2>
@@ -120,4 +113,3 @@ export const AdminStay = () => {
     </>
   );
 };
-

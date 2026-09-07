@@ -5,8 +5,11 @@ import {
   hotelService,
   thingsToDoService,
   userService,
+  packageService,
+  bookingService,
 } from "../../01_firebase/firestore";
 import "./AdminDashboard.Module.css";
+import AdminNav from "./AdminNav";
 
 
 export const AdminDashboard = () => {
@@ -14,6 +17,8 @@ export const AdminDashboard = () => {
   const [hotel, setHotel] = useState(0);
   const [users, setUsers] = useState(0);
   const [things, setThings] = useState(0);
+  const [packages, setPackages] = useState(0);
+  const [bookings, setBookings] = useState(0);
  const [error, setError] = useState("");
 
  useEffect(() => {
@@ -23,13 +28,17 @@ export const AdminDashboard = () => {
      hotelService.getAll(),
      userService.getAll(),
      thingsToDoService.getAll(),
+     packageService.getAll(),
+     bookingService.getAll(),
    ])
-     .then(([flights, hotels, usersData, things]) => {
+     .then(([flights, hotels, usersData, things, packageData, bookingData]) => {
        if (!active) return;
        setFlight(flights.length);
        setHotel(hotels.length);
        setUsers(usersData.length);
        setThings(things.length);
+       setPackages(packageData.length);
+       setBookings(bookingData.length);
      })
      .catch((requestError) => {
        if (!active) return;
@@ -44,14 +53,7 @@ export const AdminDashboard = () => {
   return (
     <>
       <div className="mainAdminLandingpage">
-        <div className="adminSideBr">
-          <h1><Link to={"/admin"}>Home</Link></h1>
-          <h1><Link to={"/admin/adminflight"}>Add Flight</Link></h1>
-          <h1><Link to={"/admin/adminstay"}>Add Stays</Link></h1>
-          <h1><Link to={"/admin/products"}>All Flights</Link></h1>
-          <h1><Link to={"/admin/hotels"}>All Hotels</Link></h1>
-          <h1><Link to={"/"}>Log out</Link></h1>
-        </div>
+        <AdminNav />
         <div className="mainBox">
           <div className="mainBoxHead">
             <h1>Admin Dashboard</h1>
@@ -75,12 +77,22 @@ export const AdminDashboard = () => {
             <div className="dataBx">
               <h1>View Users</h1>
               {<h1>{users}</h1>}
-              <Link to="/admin">View</Link>
+              <Link to="/admin/users">View</Link>
             </div>
             <div className="dataBx">
               <h1>View Popular Attractions</h1>
               {<h1>{things}</h1>}
               <Link to="/setThings">View</Link>
+            </div>
+            <div className="dataBx">
+              <h1>View Packages</h1>
+              {<h1>{packages}</h1>}
+              <Link to="/admin/packages">View</Link>
+            </div>
+            <div className="dataBx dataBxHighlight">
+              <h1>View Bookings</h1>
+              <h1>{bookings}</h1>
+              <Link to="/admin/bookings">View</Link>
             </div>
             {/*  */}
           </div>

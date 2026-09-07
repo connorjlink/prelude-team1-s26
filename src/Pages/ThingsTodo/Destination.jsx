@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Grid, Center } from "@chakra-ui/react";
 import DestinationCard from "./DestinationCard";
 import { thingsToDoService } from "../../01_firebase/firestore";
 import "./thingsTodo.css";
+import { useSelector } from "react-redux";
+import { useToast } from "@chakra-ui/react";
+import { addCartItem } from "../../utils/cart";
 
 export const Destination = () => {
   const [places, setPlaces] = useState([]);
   const [error, setError] = useState("");
   const [searchParams] = useSearchParams();
   const place = searchParams.get("place") || "";
+  const toast = useToast();
+  const activeUser = useSelector((store) => store.LoginReducer.activeUser);
 
   useEffect(() => {
     let active = true;
@@ -33,9 +39,31 @@ export const Destination = () => {
     };
   }, [place]);
 
+  const handleAddToCart = async (item) => {
+    try {
+      await addCartItem(activeUser, {
+        type: "attraction",
+        itemId: item.id,
+        title: item.title,
+        item,
+        totalPrice: Number(item.price) || 0,
+      });
+      toast({ title: "Attraction added to cart", status: "success", duration: 3000, isClosable: true });
+    } catch (error) {
+      toast({ title: "Unable to add attraction", description: error.message, status: "error", duration: 4000, isClosable: true });
+    }
+  };
+
   return (
     <div className="things-todo-page">
-      <h1 className="search-panel-title">Popular Attractions{place ? ` in ${place}` : ""}</h1>
+      <div className="catalog-heading">
+        <div>
+          <span className="eyebrow">Prelude collections</span>
+          <h1>Popular Attractions{place ? ` in ${place}` : ""}</h1>
+          <p>Discover memorable experiences wherever you go.</p>
+        </div>
+        <Link className="catalog-action" to="/">New search</Link>
+      </div>
       {error ? (
         <p className="flight-results-message">{error}</p>
       ) : (
@@ -54,6 +82,7 @@ export const Destination = () => {
                 price={item.price}
                 rating={Number(item.rating) || 0}
                 place={item.place}
+                onAdd={() => handleAddToCart(item)}
               />
             ))}
           </Grid>

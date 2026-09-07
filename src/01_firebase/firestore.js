@@ -39,6 +39,7 @@ export const COLLECTIONS = {
   HOTELS: "hotels", // canonical name (migrated from json-server "hotel")
   FLIGHTS: "flights", // canonical name (migrated from "flight")
   THINGS_TODO: "things_todo",
+  PACKAGES: "packages",
   HOTEL_CART: "hotelcart",
   FLIGHT_CART: "flightcart",
   BOOKINGS: "bookings", // unified bookings for hotels+flights
@@ -249,6 +250,26 @@ export const thingsToDoService = {
 };
 
 // ---------------------------------------------------------------------------
+// Holiday packages
+// ---------------------------------------------------------------------------
+export const packageService = {
+  collection: COLLECTIONS.PACKAGES,
+  getAll: (opts) => getAll(COLLECTIONS.PACKAGES, opts),
+  create: (data) => create(COLLECTIONS.PACKAGES, {
+    name: data.name,
+    flightId: String(data.flightId),
+    hotelId: String(data.hotelId),
+    departureDate: data.departureDate,
+    checkInDate: data.checkInDate,
+    checkOutDate: data.checkOutDate,
+    returnDate: data.returnDate,
+    discountPercentage: Number(data.discountPercentage) || 0,
+  }),
+  update: (id, data) => update(COLLECTIONS.PACKAGES, id, data),
+  remove: (id) => remove(COLLECTIONS.PACKAGES, id),
+};
+
+// ---------------------------------------------------------------------------
 // Bookings (unified top-level collection + user subcollection mirror)
 // ---------------------------------------------------------------------------
 export const bookingService = {
@@ -262,18 +283,23 @@ export const bookingService = {
   getById: (id) => getById(COLLECTIONS.BOOKINGS, id),
   create: async (data) => {
     // data: { userId, type: 'hotel'|'flight', itemId, checkIn, checkOut, guests, totalPrice, status }
+    const toTimestamp = (value) => {
+      if (!value) return null;
+      const date = value instanceof Date ? value : new Date(value);
+      return Number.isNaN(date.getTime()) ? null : Timestamp.fromDate(date);
+    };
     const payload = {
+      ...data,
       userId: String(data.userId),
       type: data.type, // 'hotel' | 'flight' | 'giftcard'
-      itemId: String(data.itemId),
+      itemId: String(data.itemId ?? ""),
       status: data.status || "confirmed",
       totalPrice: Number(data.totalPrice) || 0,
       guests: data.guests || 1,
-      checkIn: data.checkIn ? Timestamp.fromDate(new Date(data.checkIn)) : null,
-      checkOut: data.checkOut ? Timestamp.fromDate(new Date(data.checkOut)) : null,
+      checkIn: toTimestamp(data.checkIn),
+      checkOut: toTimestamp(data.checkOut),
       flightDetails: data.flightDetails || null,
       hotelDetails: data.hotelDetails || null,
-      ...data,
     };
     const created = await create(COLLECTIONS.BOOKINGS, payload);
     // mirror to user subcollection for quick lookup
@@ -308,6 +334,26 @@ export const giftcardService = {
 // Cart helpers (hotelcart / flightcart)
 // ---------------------------------------------------------------------------
 export const cartService = {
+  getForUser: async (userId) => {
+    if (!userId) return [];
+    const user = await userService.getById(userId);
+    return Array.isArray(user?.cart) ? user.cart : [];
+  },
+  saveForUser: async (userId, cart) => {
+    if (!userId) throw new Error("A signed-in user is required to save a cart.");
+    await userService.update(userId, { cart });
+    return cart;
+  },
+  addForUser: async (userId, item) => {
+    const cart = await cartService.getForUser(userId);
+    const nextItem = { ...item, cartItemId: item.cartItemId || `${item.type}-${item.itemId}-${Date.now()}` };
+    return cartService.saveForUser(userId, [...cart, nextItem]);
+  },
+  removeForUser: async (userId, cartItemId) => {
+    const cart = await cartService.getForUser(userId);
+    return cartService.saveForUser(userId, cart.filter((item) => item.cartItemId !== cartItemId));
+  },
+  clearForUser: (userId) => cartService.saveForUser(userId, []),
   hotelCart: {
     getAll: (opts) => getAll(COLLECTIONS.HOTEL_CART, opts),
     add: (data) => create(COLLECTIONS.HOTEL_CART, data),

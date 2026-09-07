@@ -1,25 +1,30 @@
 import { Box, Image, Flex, Button } from "@chakra-ui/react";
-import axios from "axios";
 import { useToast } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { formatCurrency } from "../../utils/currency";
+import { addCartItem } from "../../utils/cart";
 
 export default function FlightCard({ data }) {
   const { id, airline, from, to, departure, arrival, price, totalTime } = data;
   const toast = useToast();
+  const activeUser = useSelector((store) => store.LoginReducer.activeUser);
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    axios.post(`http://localhost:8000/flightcart`, data);
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err))
-
-    toast({
-      title: "Flight Add to Cart",
-      description: "Please Proceed to Payment",
-      status: "success",
-      duration: 9000,
-      isClosable: true,
-    });
+  const handleClick = async () => {
+    try {
+      await addCartItem(activeUser, {
+        type: "flight",
+        itemId: id,
+        title: `${from} to ${to}`,
+        item: data,
+        totalPrice: Number(price) || 0,
+      });
+      toast({ title: "Flight added to cart", status: "success", duration: 3000, isClosable: true });
+      navigate("/checkout");
+    } catch (error) {
+      toast({ title: "Unable to add flight", description: error.message, status: "error", duration: 4000, isClosable: true });
+    }
   };
 
   
@@ -54,11 +59,9 @@ export default function FlightCard({ data }) {
         <h3>Price</h3>
         <b>{formatCurrency(price)}</b>
       </Flex>
-      <Link to={"/checkout"}>
-        <Button className="accent-button" onClick={handleClick}>
-          Book Now
-        </Button>
-      </Link>
+      <Button className="accent-button" onClick={handleClick}>
+       Add to cart
+      </Button>
     </Box>
   );
 }

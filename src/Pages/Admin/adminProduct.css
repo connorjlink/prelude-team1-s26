@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 32px 22px;
-  background: var(--ink);
+  background: var(--surface);
   border-right: 1px solid var(--border);
 }
 
@@ -17,13 +17,13 @@
 .adminSideBr a {
   display: block;
   padding: 11px 12px;
-  color: #f7faf7;
+  color: var(--ink);
   border-radius: 6px;
 }
 
 .adminSideBr a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, .12);
+  color: var(--coral);
+  background: var(--soft-green);
 }
 
 .adminProductbox {
@@ -115,8 +115,50 @@
   border-radius: 5px;
 }
 
+.package-row {
+  grid-template-columns: 1.3fr repeat(4, 1fr) auto;
+}
+
+.package-edit-form {
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
 .admin-edit-form button {
   cursor: pointer;
+}
+
+.adminUserCard {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(240px, 2fr) auto;
+  align-items: start;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.adminUserCard > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.adminUserCard strong {
+  color: var(--ink);
+}
+
+.adminUserCard button {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.booking-row {
+  grid-template-columns: repeat(6, minmax(110px, 1fr));
 }
 
 @media (max-width: 760px) {
@@ -134,5 +176,10 @@
   .adminProductbox {
     margin: 20px 14px;
     padding: 18px;
+  }
+
+  .adminUserCard {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addFlight } from "../../Redux/AdminFlights/action";
 import { Link } from "react-router-dom";
+import AdminNav from "./AdminNav";
 
 let initialState = {
   airline: "",
@@ -34,15 +35,7 @@ export const Admin = () => {
   return (
     <>
       <div className="adminFlightMai">
-        <div className="adminSideBr">
-        <h1><Link to={"/admin"}>Home</Link></h1>
-          <h1><Link to={"/admin/adminflight"}>Add Flight</Link></h1>
-          <h1><Link to={"/admin/adminstay"}>Add Stays</Link></h1>
-          <h1><Link to={"/admin/products"}>All Flights</Link></h1>
-          <h1><Link to={"/admin/hotels"}>All Hotels</Link></h1>
-          <h1><Link to={"/"}>Log out</Link></h1>
-
-        </div>
+        <AdminNav />
         <div className="adminFlightBox">
           <div className="adminHead">
             <h2>Admin Panel for Flights</h2>

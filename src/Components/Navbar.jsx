@@ -14,6 +14,7 @@ const travelLinks = [
   { label: "Stays", href: "/stay" },
   { label: "Flights", href: "/flight" },
   { label: "Popular Attractions", href: "/ThingsToDo" },
+  { label: "Packages", href: "/packages" },
 ];
 
 export default function Navbar() {

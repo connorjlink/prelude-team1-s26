@@ -54,6 +54,15 @@
   box-shadow: none;
 }
 
+.flight-catalog-search {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto 22px;
+}
+
+.flight-catalog-search .flight-search-panel {
+  width: 100%;
+}
+
 .flight-search-panel .homeTopCard {
   width: 100%;
   padding: 0;

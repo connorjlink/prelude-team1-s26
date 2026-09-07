@@ -13,6 +13,10 @@ import { Register } from "./Register";
 import StayData from "./Stay/StayData";
 import CheckoutPage from "./CheckoutPage";
 import FlightData from "./Flights/FlightData";
+import { AdminPackageForm, AdminPackages } from "./Admin/AdminPackages";
+import Packages from "./Packages/Packages";
+import { AdminUsers } from "./Admin/AdminUsers";
+import { AdminBookings } from "./Admin/AdminBookings";
 
 export const AllRoutes = () => {
     return (
@@ -26,6 +30,11 @@ export const AllRoutes = () => {
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/admin/hotels" element={<AllHotels />} />
+            <Route path="/admin/adminpackage" element={<AdminPackageForm />} />
+            <Route path="/admin/packages" element={<AdminPackages />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+            <Route path="/packages" element={<Packages />} />
             <Route path="/ThingsToDo" element={<Destination/>}/>
             <Route path="/stay" element={<StayData />} />
             <Route path="/flight" element={<FlightData />} />

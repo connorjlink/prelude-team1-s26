@@ -59,14 +59,11 @@ export const addHotel = (payload) => async (dispatch) => {
 export const fetchingHotels = (sort, order, page) => async (dispatch) => {
   dispatch({ type: HOTEL_REQUEST });
   try {
-    const data = await hotelService.getAll({ orderByField: sort || "price", orderDir: order || "asc", limitN: 20 });
-    // client-side pagination slice if page provided
-    let paged = data;
-    if (page) {
-      const start = (page - 1) * 20;
-      paged = data.slice(start, start + 20);
-    }
-    dispatch({ type: GET_HOTEL_SUCCESS, payload: paged });
+    const data = await hotelService.getAll({
+      orderByField: sort || "price",
+      orderDir: order || "asc",
+    });
+    dispatch({ type: GET_HOTEL_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: HOTEL_FAILURE });
     console.error("Unable to load hotels from Firestore.", err);

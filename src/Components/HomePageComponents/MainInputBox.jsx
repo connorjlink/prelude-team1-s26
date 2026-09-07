@@ -3,6 +3,7 @@ import Stay from '../../Pages/Stay/Stay';
 import React from 'react'
 import { InputBox } from '../../Pages/ThingsTodo/InputBox'
 import Flights from '../../Pages/Flights/Flight'
+import { Link } from "react-router-dom";
 
 const MainInputBox = () => {
   return (
@@ -40,9 +41,12 @@ const MainInputBox = () => {
                         <InputBox/>
                     </TabPanel>
                     <TabPanel className="travel-panel">
-                        <div className="travel-placeholder">
-                          <strong className="search-panel-title">Packages</strong>
-                          <span>Bundle your next journey in one simple plan.</span>
+                        <div className="packages-search">
+                          <h2 className="search-panel-title">Find a holiday package</h2>
+                          <p>Bundle an existing flight and stay into one simple plan.</p>
+                          <Link className="catalog-action package-search-action" to="/packages">
+                            Search packages
+                          </Link>
                         </div>
                     </TabPanel>
                 </TabPanels>

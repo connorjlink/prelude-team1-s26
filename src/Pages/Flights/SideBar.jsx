@@ -19,18 +19,6 @@ const SideBar = ({ from, to }) => {
   const [page, setPage] = useState(1);
   const [Packaging, setpackaging] = useState("");
 
-  const pageBtn={
-    marginTop: "3%",
-    // width:"164px",
-    padding:"15px",
-    height: "43px",
-    background: "var(--coral)",
-    color:" #FFFFFF",
-    bordeRadius: "0.5rem",
-    position: "relative",
-    marginBottom:"1rem"
-}
-
   return (
       <Box className="flight-results-shell">
         <Box
@@ -87,28 +75,23 @@ const SideBar = ({ from, to }) => {
           />
 
           {/* Pagination Part UI Start */}
-          <Stack className="flight-pagination" spacing={4} direction='row' align='center'>
-
-          {/* <Flex m="5" align="center"> */}
-            <Button 
-              style={pageBtn}
+          <Stack className="flight-pagination" direction="row" align="center">
+            <Button
               onClick={() => setPage(page - 1)}
               isDisabled={page === 1}
             >
               Previous
             </Button>
-            <Button style={pageBtn}>
+            <Button className="is-current-page" aria-current="page">
               {page}
             </Button>
             <Button
-              style={pageBtn}
               isDisabled={page === 4}
               onClick={() => setPage(page + 1)}
               >
               Next
             </Button>
-          {/* </Flex> */}
-              </Stack>
+          </Stack>
           {/* Pagination Part UI End */}
 
           <FlightList page={page} priceValue={priceValue} from={from} to={to} />
