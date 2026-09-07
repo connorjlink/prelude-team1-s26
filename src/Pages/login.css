@@ -4,6 +4,8 @@
   align-items: center;
   justify-content: center;
   padding: 52px 20px;
+  flex-direction: column-reverse;
+  gap: 50px;
   background: radial-gradient(circle at 15% 20%, #e4eee6, transparent 35%);
 }
 
