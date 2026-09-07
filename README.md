@@ -25,11 +25,11 @@
 
 <h2>Features</h2>
 - Landing Page
-- Login and signup via firebase (OTP).
-- View details of flights, hotels.
+- Login and signup via firebase (SMS OTP)
+- View details of flights, hotels
 - Search for flights, hotels, and holiday packages
 - Sorting & Filtering and Searching
-- Book flights, hotels.
+- Book flights, hotels
 - Cart Section
 - Admin Panel
 
@@ -48,9 +48,6 @@ Install the dependencies:
 
 Start the server:
 > npm start
-
-Start JSON-Server:
-> npm run server
 
 Open the website in your browser:
 > http://localhost:3000/
