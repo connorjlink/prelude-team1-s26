@@ -8,11 +8,13 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
   DeleteFlightProducts,
   fetchFlightProducts,
+  updateFlight,
 } from "../../Redux/AdminFlights/action";
 
 export const AdminProducts = () => {
   const dispatch = useDispatch();
   const [limit, setLimit] = useState(5);
+  const [editing, setEditing] = useState(null);
   const { isLoading, data } = useSelector((store) => {
     return {
       isLoading: store.FlightReducer.isLoading,
@@ -38,6 +40,12 @@ export const AdminProducts = () => {
     if (data.length >= limit) {
       setLimit((prev) => prev + 5);
     }
+  };
+
+  const saveFlight = (event) => {
+    event.preventDefault();
+    dispatch(updateFlight(editing.id, editing));
+    setEditing(null);
   };
 
   //   console.log(limit);
@@ -72,16 +80,28 @@ export const AdminProducts = () => {
           {isLoading ? <h1>Please wait...</h1> : ""}
           {data.map((ele, i) => (
             <div key={i} className="adminProductlist">
-              <span>{ele.airline}</span>
-              <span>{ele.from}</span>
-              <span>{ele.to}</span>
-              <span>{ele.price}</span>
-              <span>{ele.number}</span>
+              {editing?.id === ele.id ? (
+                <form className="admin-edit-form" onSubmit={saveFlight}>
+                  {["airline", "from", "to", "price", "number"].map((field) => (
+                    <input key={field} name={field} value={editing[field] || ""} onChange={(event) => setEditing({ ...editing, [field]: event.target.value })} />
+                  ))}
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setEditing(null)}>Cancel</button>
+                </form>
+              ) : (
+                <>
+                  <span>{ele.airline}</span>
+                  <span>{ele.from}</span>
+                  <span>{ele.to}</span>
+                  <span>{ele.price}</span>
+                  <span>{ele.number}</span>
+                </>
+              )}
               <span>
                 <button onClick={() => handleDeleteFlights(ele.id)}>
                   Delete <i className="fa fa-trash"></i>
                 </button>
-                <button>
+                <button type="button" onClick={() => setEditing({ ...ele })}>
                   Edit <i className="fa fa-pencil"></i>
                 </button>
               </span>

@@ -27,6 +27,11 @@
   color-scheme: light;
 }
 
+.flight-search-panel .MainSearchinputBx input[type="date"]:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
 .flight-search-panel .MainSearchinputBx input[type="date"]::-webkit-datetime-edit,
 .flight-search-panel .MainSearchinputBx input[type="date"]::-webkit-datetime-edit-text,
 .flight-search-panel .MainSearchinputBx input[type="date"]::-webkit-datetime-edit-month-field,

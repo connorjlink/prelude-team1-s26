@@ -1,111 +1,126 @@
-.adminFlightMai {
-  position: relative;
-  min-height: 100vh;
+.adminSideBr {
+  flex: 0 0 230px;
   display: flex;
-  /* align-items: center; */
-  justify-content: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-    url(https://cdn.pixabay.com/photo/2015/10/30/20/13/sunrise-1014712_960_720.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.adminFlightMai > .adminFlightBox {
-  width: 65%;
-  height: 50%;
-  padding: 20px 40px 20px 20px;
-  transform: scale(0.9);
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  color: white;
-  border-radius: 10px;
-  backdrop-filter: blue(5px);
-  border: 1px solid white;
-  margin: auto;
-}
-
-
-.adminFlightMai > .adminSideBr {
-  position: fixed;
-  left: 0;
-  /* top: 0; */
-  gap: 20px;
-  height: 100%;
-  display: flex;
-  background: rgba(255, 255, 255, 0.2);
   flex-direction: column;
-  padding: 30px 20px;
-  color: white;
-  border-right: 1px solid #fff;
-}
-.adminFlightMai > .adminSideBr > h1:hover {
-  color: #3c996e;
-  font-size: 20px;
-  border-bottom: 2px solid #3c996e;
+  gap: 6px;
+  padding: 32px 22px;
+  background: var(--ink);
+  border-right: 1px solid var(--border);
 }
 
-.adminFlightMai > .adminFlightBox > .adminHead {
-  padding: 20px;
-  color: white;
-  /* border: 1px solid black; */
+.adminSideBr h1 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
 }
-.adminFlightMai > .adminFlightBox > .adminHead > h2 {
+
+.adminSideBr a {
+  display: block;
+  padding: 11px 12px;
+  color: #f7faf7;
+  border-radius: 6px;
+}
+
+.adminSideBr a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+}
+
+.adminFlightBox {
+  width: min(760px, calc(100% - 48px));
+  height: fit-content;
+  margin: 48px auto;
+  padding: 34px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 18px 45px rgba(37, 76, 58, .1);
+}
+
+.adminHead {
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.adminHead h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
 }
 
-.adminFlightMai > .adminFlightBox > .adminFlightInputs form {
+.adminFlightInputs form {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  font-size: large;
+  gap: 4px;
+  padding-top: 20px;
 }
 
-.adminFlightMai
-  > .adminFlightBox
-  > .adminFlightInputs
-  form
-  > .adminFlightInputBx {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  padding: 10px;
-  /* border: 1px solid black; */
+.adminFlightInputBx {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
 }
 
-.adminFlightMai
-  > .adminFlightBox
-  > .adminFlightInputs
-  form
-  > .adminFlightInputBx
-  > input {
-  width: 70%;
-  padding: 7px 20px;
-  background: transparent;
-  outline: none;
-  border: 1px solid white;
+.adminFlightInputBx label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
 }
-.adminFlightMai
-  > .adminFlightBox
-  > .adminFlightInputs
-  form
-  > .adminFlightInputBx
-  > label {
-  width: 30%;
+
+.adminFlightInputBx input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+}
+
+.adminFlightInputBx input:focus {
+  outline: 2px solid rgba(215, 101, 76, .2);
+  border-color: var(--coral);
+}
+
+.adminFlightInputBx button {
+  grid-column: 2;
+  justify-self: start;
+  padding: 11px 18px;
+  color: #fff;
+  background: var(--coral);
+  border: 0;
+  border-radius: 6px;
   font-weight: 700;
-  /* border: 1px solid black; */
 }
-.adminFlightMai
-  > .adminFlightBox
-  > .adminFlightInputs
-  form
-  > .adminFlightInputBx
-  > button {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 7px 20px;
-}
-.adminFlightMai > .adminSideBr{
-  width: 15%;
-  font-size: larger;
+
+@media (max-width: 560px) {
+  .adminFlightMai {
+    display: block;
+  }
+
+  .adminSideBr {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 14px;
+  }
+
+  .adminFlightBox {
+    width: calc(100% - 28px);
+    margin: 24px auto;
+    padding: 22px 18px;
+  }
+
+  .adminFlightInputBx {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .adminFlightInputBx button {
+    grid-column: 1;
+  }
 }

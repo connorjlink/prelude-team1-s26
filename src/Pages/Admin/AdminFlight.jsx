@@ -125,7 +125,7 @@ export const Admin = () => {
                 />
               </div>
               <div className="adminFlightInputBx">
-                <label htmlFor="">TotalTime</label>
+                <label htmlFor="">Duration</label>
                 <input
                   id="input"
                   type="text"

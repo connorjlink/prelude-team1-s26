@@ -6,6 +6,7 @@ import {
   POST_HOTEL_SUCCESS,
   NEW_GET_HOTELS_SUCCESS,
   DELETE_HOTEL,
+  UPDATE_HOTEL,
 } from "./actionType";
 import { hotelService } from "../../01_firebase/firestore";
 
@@ -79,4 +80,9 @@ export const DeleteHotel = (deleteId) => async (dispatch) => {
       console.log(err);
     }
   }
+};
+
+export const updateHotel = (id, data) => async (dispatch) => {
+  await hotelService.update(id, data);
+  dispatch({ type: UPDATE_HOTEL, payload: { id, data } });
 };

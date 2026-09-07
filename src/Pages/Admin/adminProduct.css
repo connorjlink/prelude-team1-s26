@@ -1,136 +1,138 @@
-.adminProductMain {
-  position: relative;
-  min-height: 100vh;
-  padding: 0px 0;
-  /* width: 100%; */
+.adminSideBr {
+  flex: 0 0 230px;
   display: flex;
-  /* align-items: center; */
-  justify-content: space-around;
-  /* flex-direction: column; */
-  
+  flex-direction: column;
+  gap: 6px;
+  padding: 32px 22px;
+  background: var(--ink);
+  border-right: 1px solid var(--border);
 }
 
-.adminProductMain > .adminSideBr {
-  position: sticky;
-  left: 0;
-  top: 0px;
-  gap: 20px;
-  height: auto;
-  width: 15%;
-  display: flex;
-  background: rgba(255, 255, 255, 0.2);
-  flex-direction: column;
-  padding: 30px 20px;
-  color: white;
-  font-size: 15px;
+.adminSideBr h1 {
+  margin: 0;
+  font-size: 13px;
   font-weight: 600;
-  background-color: #222d31;
-  /* border: 1px solid blue; */
 }
 
-.adminProductMain > .adminSideBr > h1:hover{
-  color: #3c996e;
-  font-size: 20px;
-  border-bottom: 2px solid #3c996e;
+.adminSideBr a {
+  display: block;
+  padding: 11px 12px;
+  color: #f7faf7;
+  border-radius: 6px;
 }
 
-.head{
-  font-size: 30px;
-  width: 100%;
-  font-weight: bold;
-  font-style: italic;
-  margin-bottom: 20px;
-  border-bottom: 2px solid grey;
-
+.adminSideBr a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
 }
 
-.adminProductMain > .adminProductbox {
-  height: 600px;
-  width: 90%;
+.adminProductbox {
+  flex: 1;
+  min-width: 0;
+  margin: 36px clamp(18px, 4vw, 60px);
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 18px 45px rgba(37, 76, 58, .08);
+  overflow-x: auto;
+}
+
+.filterProdcut {
   display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  /* border: 1px solid black; */
-}
-.adminProductMain > .adminProductbox::-webkit-scrollbar {
-  width: 2px;
-}
-
-/* Track */
-.adminProductMain > .adminProductbox::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-/* Handle */
-.adminProductMain > .adminProductbox::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-/* Handle on hover */
-.adminProductMain > .adminProductbox::-webkit-scrollbar-thumb:hover {
-  /* background: #555; */
-}
-/* .adminProductMain > .adminProductbox {} */
-
-.adminProductMain > .adminProductbox > .adminProductlist {
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 5px;
-  /* border: 1px solid black; */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-.adminProductMain > .adminProductbox > .adminProductlist > span {
-  display: flex;
-  gap: 30px;
-}
-.adminProductMain > .adminProductbox > .adminProductlist > span > img {
-  width: 50px;
-}
-
-.adminProductMain > .adminProductbox > .adminProductlist > span > button {
-  padding: 5px 10px;
-  /* border: 1px solid black; */
-}
-
-.adminProductMain
-  > .adminProductbox
-  > .adminProductlist
-  > span
-  > button:first-child {
-  background: red;
-  color: white;
-}
-
-.adminProductMain
-  > .adminProductbox
-  > .adminProductlist
-  > span
-  > button:last-child {
-  background: royalblue;
-  color: white;
-}
-
-.adminProductMain > .adminProductbox > .filterProdcut {
-  padding: 20px 10px;
-  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  margin-bottom: 30px;
 }
 
-.adminProductMain > .adminProductbox > .filterProdcut > input {
-  padding: 5px 20px;
-  width: 300px;
-  outline: none;
-  border: none;
-  border: 1px solid black;
+.filterProdcut input {
+  flex: 1 1 240px;
+  padding: 11px 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
 }
 
-.adminProductMain > .adminProductbox > .filterProdcut > button {
-  background: royalblue;
-  padding: 5px 10px;
-  color: white;
+.filterProdcut button,
+.adminProductlist button {
+  padding: 10px 14px;
+  color: #fff;
+  background: var(--coral);
+  border: 0;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.head {
+  margin-bottom: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.adminProductlist {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(90px, 1fr)) auto;
+  align-items: center;
+  gap: 14px;
+  min-width: 760px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.adminProductlist img {
+  width: 54px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.adminProductlist > span:last-child {
+  display: flex;
+  gap: 6px;
+}
+
+.adminProductlist > span:last-child button:last-child {
+  background: var(--ink);
+}
+
+.admin-edit-form {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(100px, 1fr));
+  grid-column: 1 / -1;
+  gap: 8px;
+  width: 100%;
+}
+
+.admin-edit-form input {
+  min-width: 0;
+  padding: 9px 10px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+}
+
+.admin-edit-form button {
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .adminProductMain {
+    display: block;
+  }
+
+  .adminSideBr {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 14px;
+  }
+
+  .adminProductbox {
+    margin: 20px 14px;
+    padding: 18px;
+  }
 }

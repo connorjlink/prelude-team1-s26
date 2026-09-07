@@ -47,7 +47,7 @@ export default function FlightCard({ data }) {
         <b style={{ fontSize: "14px" }}>{to} </b>
       </Flex>
       <Flex className="flight-card-section" display={"flex"} flexDirection="column">
-        <h3>Duation</h3>
+        <h3>Duration</h3>
         <b>{totalTime}</b>
       </Flex>
       <Flex className="flight-card-section" display={"flex"} flexDirection="column">

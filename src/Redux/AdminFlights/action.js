@@ -6,6 +6,7 @@ import {
   FLIGHT_REQUEST,
   GET_FLIGHT_SUCCESS,
   POST_FLIGHT_SUCCESS,
+  UPDATE_FLIGHT,
 } from "./actionType";
 import { flightService } from "../../01_firebase/firestore";
 
@@ -73,4 +74,9 @@ export const DeleteFlightProducts = (deleteId) => async (dispatch) => {
       console.log(err);
     }
   }
+};
+
+export const updateFlight = (id, data) => async (dispatch) => {
+  await flightService.update(id, data);
+  dispatch({ type: UPDATE_FLIGHT, payload: { id, data } });
 };

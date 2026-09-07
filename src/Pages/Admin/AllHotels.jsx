@@ -6,11 +6,12 @@ import { Link } from "react-router-dom";
 import "font-awesome/css/font-awesome.min.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-import { DeleteHotel, fetchingHotels } from "../../Redux/AdminHotel/action";
+import { DeleteHotel, fetchingHotels, updateHotel } from "../../Redux/AdminHotel/action";
 
 export const AllHotels = () => {
   const dispatch = useDispatch();
   const [limit, setLimit] = useState(5);
+  const [editing, setEditing] = useState(null);
   const { isLoading, data } = useSelector((store) => {
     return {
       isLoading: store.HotelReducer.isLoading,
@@ -38,6 +39,12 @@ export const AllHotels = () => {
     if (data.length >= limit) {
       setLimit((prev) => prev + 5);
     }
+  };
+
+  const saveHotel = (event) => {
+    event.preventDefault();
+    dispatch(updateHotel(editing.id, editing));
+    setEditing(null);
   };
 
   console.log(limit);
@@ -75,13 +82,23 @@ export const AllHotels = () => {
           {isLoading ? <h1>Please wait...</h1> : ""}
           {data.map((ele, i) => (
             <div key={i} className="adminProductlist">
+             {editing?.id === ele.id ? (
+               <form className="admin-edit-form" onSubmit={saveHotel}>
+                 {["image", "name", "place", "price", "description", "additional"].map((field) => (
+                   <input key={field} name={field} value={editing[field] || ""} onChange={(event) => setEditing({ ...editing, [field]: event.target.value })} />
+                 ))}
+                 <button type="submit">Save</button>
+                 <button type="button" onClick={() => setEditing(null)}>Cancel</button>
+               </form>
+             ) : (
+               <>
               <span>
                 <img src={ele.image} alt="" />
               </span>
               <span>
                 {/* {ele.name == "" ? "Default" : ""} */}
                 {ele.name.length > 10
-                  ? (ele.name = ele.name.substring(0, 10) + "...")
+                  ? `${ele.name.substring(0, 10)}...`
                   : ele.name}
               </span>
               <span>{ele.place}</span>
@@ -92,10 +109,12 @@ export const AllHotels = () => {
                 <button onClick={() => handleDeleteHotel(ele.id)}>
                   Delete <i className="fa fa-trash"></i>
                 </button>
-                <button>
+                <button type="button" onClick={() => setEditing({ ...ele })}>
                   Edit <i className="fa fa-pencil"></i>
                 </button>
               </span>
+               </>
+             )}
             </div>
           ))}
           {/*  */}

@@ -5,6 +5,7 @@ import {
   POST_HOTEL_SUCCESS,
   NEW_GET_HOTELS_SUCCESS,
   DELETE_HOTEL,
+  UPDATE_HOTEL,
 } from "./actionType";
 
 const initialState = {
@@ -38,6 +39,12 @@ export const HotelReducer = (state = initialState, { type, payload }) => {
       const filterFlight = state.data.filter((ele) => ele.id !== payload);
       return { ...state, data: filterFlight };
     }
+
+    case UPDATE_HOTEL:
+      return {
+        ...state,
+        data: state.data.map((item) => item.id === payload.id ? { ...item, ...payload.data } : item),
+      };
 
     default:
       return state;

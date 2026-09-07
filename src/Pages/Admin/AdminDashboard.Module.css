@@ -1,104 +1,119 @@
-.mainAdminLandingpage {
-  position: relative;
+.mainAdminLandingpage,
+.adminProductMain,
+.adminFlightMai {
   min-height: 100vh;
   display: flex;
-  justify-content: space-between;
+  color: var(--ink);
+  background: var(--page);
 }
 
-.mainAdminLandingpage > .adminSideBr {
-  position: relative;
-  width: 15%;
-  left: 0;
-  top: 0px;
-  gap: 20px;
-  height: 100vh;
+.adminSideBr {
+  flex: 0 0 230px;
   display: flex;
-  background: rgba(255, 255, 255, 0.2);
   flex-direction: column;
-  padding: 30px 20px;
-  color: white;
-  font-size: 16px;
+  gap: 6px;
+  padding: 32px 22px;
+  background: var(--ink);
+  border-right: 1px solid var(--border);
+}
+
+.adminSideBr h1 {
+  margin: 0;
+  font-size: 13px;
   font-weight: 600;
-  background-color: #222d31;
-  text-decoration: none;
-}
-.mainAdminLandingpage > .adminSideBr >h1:hover {
-   color: #3c996e;
-   font-size: 20px;
-   border-bottom: 2px solid #3c996e;
 }
 
-
-.mainAdminLandingpage > .mainBox {
-  width: 100%;
-  /* border: 1px solid black; */
+.adminSideBr a {
+  display: block;
+  padding: 11px 12px;
+  color: #f7faf7;
+  border-radius: 6px;
 }
 
-.mainAdminLandingpage > .mainBox > .mainBoxHead {
-  padding: 20px;
-  font-size: 40px;
-  font-style: italic;
-  font-weight: bold;
+.adminSideBr a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
 }
 
-.mainAdminLandingpage > .mainBox > .DataBoxes {
+.mainBox {
+  flex: 1;
+  padding: 46px clamp(24px, 5vw, 72px);
+}
+
+.mainBoxHead {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mainBoxHead h1,
+.head h1 {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 600;
+}
+
+.mainBoxHead hr {
+  display: inline-block;
+  width: 26px;
+  margin: 12px 5px 0 0;
+  border: 0;
+  border-top: 2px solid var(--coral);
+}
+
+.DataBoxes {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px 40px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
+  padding-top: 28px;
 }
 
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx {
-  position: relative;
-  padding: 10px;
-  /* border: 1px solid black; */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+.dataBx {
+  min-height: 160px;
   display: flex;
   flex-direction: column;
-  align-items: space-between;
-  gap: 10px;
-  color: white;
-  border-radius: 50px;
-}
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx > h1 {
-  padding: 12px;
-  font-size: larger;
-  font-style: italic;
-  font-weight: bold;
-}
-
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx > div {
-  align-items: center;
-  width: 50%;
-
-}
-
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx:nth-child(1) {
-  background: #ff004f;
-}
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx:nth-child(2) {
-  background: darkorange;
-}
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx:nth-child(3) {
-  background: #3c996e;
-}
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx:nth-child(4) {
-  background: #de4a39;
-}
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx:nth-child(5) {
-  background: #f909bc;
-}
-
-.mainAdminLandingpage > .mainBox > .DataBoxes > .dataBx a {
-  /* position: absolute; */
-  bottom: 0;
-  /* background: white; */
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 5px 20px;
-  color: white;
-  width: 80%;
-  margin: auto;
+  justify-content: space-between;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(37, 76, 58, .08);
 }
 
+.dataBx h1 {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
 
+.dataBx h1:nth-of-type(2) {
+  color: var(--coral);
+  font-size: 34px;
+}
+
+.dataBx a {
+  color: var(--coral);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .mainAdminLandingpage,
+  .adminProductMain,
+  .adminFlightMai {
+    display: block;
+  }
+
+  .adminSideBr {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 14px;
+  }
+
+  .mainBox {
+    padding: 30px 18px;
+  }
+}

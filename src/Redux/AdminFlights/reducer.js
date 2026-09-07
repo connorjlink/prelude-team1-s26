@@ -5,6 +5,7 @@ import {
   FLIGHT_REQUEST,
   GET_FLIGHT_SUCCESS,
   POST_FLIGHT_SUCCESS,
+  UPDATE_FLIGHT,
 } from "./actionType";
 
 const initialState = {
@@ -34,6 +35,12 @@ export const FlightReducer = (state = initialState, { type, payload }) => {
       const filterFlight = state.data.filter((ele) => ele.id !== payload);
       return { ...state, data: filterFlight };
     }
+
+    case UPDATE_FLIGHT:
+      return {
+        ...state,
+        data: state.data.map((item) => item.id === payload.id ? { ...item, ...payload.data } : item),
+      };
 
     default:
       return state;
