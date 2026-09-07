@@ -1,12 +1,8 @@
 <h1>Expedia Clone Prelude Project</h1>
 
-<p>This project is a clone of the Expedia website, created by Team of 4: Alec Moore, Chris Lopez, Connor Link, and Connor Moroney. 
-  This project was cloned and then enhanced with a firebase backend and more featrues with the power of AI!
-<p>
-
+<p>This project is a clone of the Expedia website, created by Team of 4: Alec Moore, Chris Lopez, Connor Link, and Connor Moroney. This project was cloned and then enhanced with a firebase backend and more features + bug fixes with well-executed system engineering design and the power of AI!<p>
 
 <h2>Tech Stack</h2>
-
 - HTML
 - CSS
 - JavaScript
@@ -15,9 +11,7 @@
 - JSON-Server
 - firebase
 
-
 <h2>Dependency</h2>
-
 - Axios
 - redux
 - react-redux
@@ -30,7 +24,6 @@
 - better-react-carousel
 
 <h2>Features</h2>
-
 - Landing Page
 - Login and signup via firebase (OTP).
 - View details of flights, hotels.
@@ -44,23 +37,23 @@
 
 To run this project locally, follow the steps below:
 
-. Clone the repository by running the following command:
-git clone https://github.com/kumkumdutta/interesting-stretch-8935.git
+Clone the repository by running the following command:
+> git clone https://github.com/kumkumdutta/interesting-stretch-8935.git
 
-. Navigate to the project directory:
-cd hesitant-river-6235
+Navigate to the project directory:
+> cd prelude-team1-s26
 
-. Install the dependencies:
-npm install
+Install the dependencies:
+> npm install
 
-. Start the server:
-npm start
+Start the server:
+> npm start
 
-. Start JSON-Server:
-npm run server
+Start JSON-Server:
+> npm run server
 
-. Open the website in your browser:
-http://localhost:3000/
+Open the website in your browser:
+> http://localhost:3000/
 
 <h2>Firestore</h2>
 
@@ -96,30 +89,20 @@ http://localhost:3000/
 
 <h2>Deployment</h2>
 
-<!--TOOD-->
-<!--Below is no longer true-->
-
-This project has been deployed using Vercel at the following URL:
-
-https://interesting-stretch-8935-liart.vercel.app/
-
+This project is deployed locally only.
 
 This is Login and Signup pages:-
 ![login](https://user-images.githubusercontent.com/112754519/231046318-135d34cb-0ae7-46c3-851c-6889441c62de.PNG)
-
 
 
 This is the Stays Page:-
 ![stays](https://user-images.githubusercontent.com/112754519/231046349-d9885d9f-b42d-4d9f-bfc2-0cac0f9a10df.PNG)
 
 
-
 This is the Flight Page:-
 ![Flight](https://user-images.githubusercontent.com/112754519/231046392-fea5d486-9b26-462c-af9a-5727853e6669.PNG)
 
 
-
 This is the Admin Page:-
 ![Admin](https://user-images.githubusercontent.com/112754519/231046415-c8c2f14c-f586-4da0-884a-992bc18b0e12.PNG)
-
 
