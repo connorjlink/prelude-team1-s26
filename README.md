@@ -1,44 +1,42 @@
-<h1>Expedia Clone Prelude Project</h1>
+# Prelude
 
-<p>This project is a clone of the Expedia website, created by Team of 4: Alec Moore, Chris Lopez, Connor Link, and Connor Moroney. This project was cloned and then enhanced with a firebase backend and more features + bug fixes with well-executed system engineering design and the power of AI!<p>
+## An AI-enhanced travel booking web app — search stays and flights, filter by price and rating, and book in a few clicks.
 
-<h2>Tech Stack</h2>
+Prelude is a full-stack travel booking application inspired by Expedia. It lets users browse hotels and flights, sort and filter results by price and rating, manage a cart, and complete bookings — backed by a Firebase (Firestore) data layer with a local JSON-Server fallback for development. It was originally cloned from an open-source Expedia clone and then restyled and extended by our team with a new UI, a Firebase backend, and additional features.
+
+**Keywords:** Expedia clone, React travel app, hotel booking, flight search, Firebase, Firestore, Redux, JSON-Server, travel booking website.
+
+Built by a team of four: **Alec Moore, Chris Lopez, Connor Link, and Connor Moroney.**
+
+## Tech Stack
+
 - HTML
 - CSS
 - JavaScript
 - React
 - Redux
 - JSON-Server
-- firebase
+- Firebase (Firestore)
 
-<h2>Dependency</h2>
-- Axios
-- redux
-- react-redux
-- redux thunk
-- chakraUI
-- firebase
-- font-awesome
-- JSON-server
-- react-router-Dom
-- better-react-carousel
+**Key dependencies:** Axios, redux, react-redux, redux-thunk, Chakra UI, firebase, font-awesome, json-server, react-router-dom, better-react-carousel.
 
-<h2>Features</h2>
-- Landing Page
-- Login and signup via firebase (SMS OTP)
-- View details of flights, hotels
+## Features
+
+- Landing page with a restyled Prelude UI
+- Login and signup via Firebase (OTP)
+- View details of flights and hotels
 - Search for flights, hotels, and holiday packages
-- Sorting & Filtering and Searching
-- Book flights, hotels
-- Cart Section
-- Admin Panel
+- Sorting, filtering, and searching (by price and rating)
+- Book flights and hotels
+- Cart section
+- Admin panel
 
-<h2>Installation</h2>
+## Installation
 
 To run this project locally, follow the steps below:
 
 Clone the repository by running the following command:
-> git clone https://github.com/kumkumdutta/interesting-stretch-8935.git
+> git clone https://git.ece.iastate.edu/clink1/prelude-team1-s26.git
 
 Navigate to the project directory:
 > cd prelude-team1-s26
@@ -52,7 +50,7 @@ Start the server:
 Open the website in your browser:
 > http://localhost:3000/
 
-<h2>Firestore</h2>
+## Firestore Setup (for Contributors)
 
 1. Prereq: Firestore already created in Firebase Console (      
    project prelude-2c284). Enable Firestore in Test Mode if     
@@ -84,22 +82,22 @@ Open the website in your browser:
    permissions -> check projectId matches console; no data ->   
    re-run seeder                                                
 
-<h2>Deployment</h2>
+## Deployment
 
-This project is deployed locally only.
+This project is run via **local deployment** only. Start it with `npm start` and open `http://localhost:3000/`. There is no public hosted URL.
 
 This is Login and Signup pages:-
-![login](https://user-images.githubusercontent.com/112754519/231046318-135d34cb-0ae7-46c3-851c-6889441c62de.PNG)
+![login](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Login_Signup_Page.png)
 
 
 This is the Stays Page:-
-![stays](https://user-images.githubusercontent.com/112754519/231046349-d9885d9f-b42d-4d9f-bfc2-0cac0f9a10df.PNG)
+![stays](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Stays.png)
 
 
 This is the Flight Page:-
-![Flight](https://user-images.githubusercontent.com/112754519/231046392-fea5d486-9b26-462c-af9a-5727853e6669.PNG)
+![Flight](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Flights.png)
 
 
 This is the Admin Page:-
-![Admin](https://user-images.githubusercontent.com/112754519/231046415-c8c2f14c-f586-4da0-884a-992bc18b0e12.PNG)
+![Admin](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Admin.png)
 
