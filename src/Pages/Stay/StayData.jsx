@@ -31,16 +31,19 @@ const StayData = () => {
   const filteredHotel = useMemo(() => {
     const [minimumPrice, maximumPrice] = selectedPriceRange;
     const hotelsInRange = (data || []).filter((hotel) => {
-      const price = Number(hotel.price);
+      const price = parsePrice(hotel.price);
       return Number.isFinite(price) && price >= minimumPrice && price <= maximumPrice;
     });
 
     if (!sortOptions.sort) return hotelsInRange;
 
     return [...hotelsInRange].sort((firstHotel, secondHotel) => {
-      const firstValue = Number(firstHotel[sortOptions.sort]) || 0;
-      const secondValue = Number(secondHotel[sortOptions.sort]) || 0;
-      return (firstValue - secondValue) * (sortOptions.order === "desc" ? -1 : 1);
+      const firstValue = parsePrice(firstHotel[sortOptions.sort]);
+      const secondValue = parsePrice(secondHotel[sortOptions.sort]);
+      // fallback to Number for non-price fields like rating
+      const a = Number.isFinite(firstValue) ? firstValue : Number(firstHotel[sortOptions.sort]) || 0;
+      const b = Number.isFinite(secondValue) ? secondValue : Number(secondHotel[sortOptions.sort]) || 0;
+      return (a - b) * (sortOptions.order === "desc" ? -1 : 1);
     });
   }, [data, selectedPriceRange, sortOptions]);
   const totalNumOfPages = Math.max(1, Math.ceil(filteredHotel.length / pageSize));
@@ -79,17 +82,8 @@ const StayData = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (data) {
-      setFilteredHotel(
-        data.filter(
-          (hotel) => {
-            const p = parsePrice(hotel.price);
-            return p >= selectedPriceRange[0] && p <= selectedPriceRange[1];
-          }
-        )
-      );
-    }
-  }, [data, selectedPriceRange]);
+    setCurrentPage(1);
+  }, [selectedPriceRange, sortOptions]);
 
   useEffect(() => {
     if (currentPage > totalNumOfPages) setCurrentPage(totalNumOfPages);
