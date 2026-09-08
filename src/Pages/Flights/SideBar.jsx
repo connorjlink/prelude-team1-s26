@@ -72,6 +72,11 @@ const SideBar = ({ from, to }) => {
             width={"90%"}
             margin="auto"
             marginBottom={"20px"}
+            fallbackSrc="https://via.placeholder.com/728x90?text=Travel+Deals"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+            alt="Promotional banner"
           />
 
           {/* Pagination Part UI Start */}

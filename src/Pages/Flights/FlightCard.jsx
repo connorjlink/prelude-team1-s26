@@ -38,6 +38,11 @@ export default function FlightCard({ data }) {
           src="https://play-lh.googleusercontent.com/OhZSLjRDLvFLqtDp9bIgcvAweZIg5V5uIMI_7kOaS-9nPR043DUfoibkn1BgwG7Ai1U=w240-h480-rw"
           width={"35px"}
           height="30px"
+          fallbackSrc="https://via.placeholder.com/35x30?text=%E2%9C%88"
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+          alt={airline || "Airline"}
         />
         <h1>{airline}</h1>
       </Box>

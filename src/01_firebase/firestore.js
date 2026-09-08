@@ -119,6 +119,12 @@ export const userService = {
     const snap = await getDocs(q);
     return snap.docs.map((d) => ({ id: d.id, ...d.data() }))[0] || null;
   },
+  getByEmail: async (email) => {
+    const normalized = String(email).trim().toLowerCase();
+    const q = query(col(COLLECTIONS.USERS), where("email", "==", normalized));
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }))[0] || null;
+  },
   create: (data) => create(COLLECTIONS.USERS, {
     number: data.number,
     user_name: data.user_name || data.userName || "",

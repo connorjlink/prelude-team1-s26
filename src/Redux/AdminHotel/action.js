@@ -74,7 +74,11 @@ export const DeleteHotel = (deleteId) => async (dispatch) => {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
-      await res.json();
+      // DELETE on json-server may return empty body; guard JSON parse
+      const text = await res.text();
+      if (text) {
+        try { JSON.parse(text); } catch (_) {}
+      }
       dispatch(handleDeleteHotel(deleteId));
     } catch (err) {
       console.log(err);
