@@ -6,7 +6,7 @@ import {
   Image,
   
 } from '@chakra-ui/react';
-import { formatCurrency } from "../../utils/currency";
+import { formatCurrency, parsePrice } from "../../utils/currency";
 import { Button } from "@chakra-ui/react";
 
 
@@ -47,9 +47,9 @@ export default function DestinationCard({image,title,price,rating,place,onAdd}){
         </Box>
 
         <Box color="var(--coral)" fontWeight="700">
-          {formatCurrency(price)}
+          {parsePrice(price) === 0 ? "Free" : formatCurrency(price)}
           <Box as='span' color='gray.600' fontSize='sm'>
-            / wk
+            {parsePrice(price) === 0 ? "" : " / wk"}
           </Box>
         </Box>
 

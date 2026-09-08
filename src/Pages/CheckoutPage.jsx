@@ -2,24 +2,24 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { bookingService, cartService } from "../01_firebase/firestore";
-import { formatCurrency } from "../utils/currency";
+import { formatCurrency, parsePrice } from "../utils/currency";
 import { getActiveUserId } from "../utils/cart";
 import "./CheckoutPage.css";
 
 function getLineTotal(item) {
   if (item.type === "package") {
-    const fullPrice = Number(item.fullPrice) || 0;
+    const fullPrice = parsePrice(item.fullPrice);
     return {
       fullPrice,
-      total: Number(item.totalPrice) || fullPrice,
+      total: parsePrice(item.totalPrice) || fullPrice,
       detail: `${item.nights || 1} nights · ${item.item?.discountPercentage || 0}% discount`,
     };
   }
   if (item.type === "hotel") {
     const nights = Number(item.nights) || 1;
-    return { fullPrice: (Number(item.item?.price) || 0) * nights, total: (Number(item.item?.price) || 0) * nights, detail: `${nights} night${nights === 1 ? "" : "s"}` };
+    return { fullPrice: parsePrice(item.item?.price) * nights, total: parsePrice(item.item?.price) * nights, detail: `${nights} night${nights === 1 ? "" : "s"}` };
   }
-  return { fullPrice: Number(item.totalPrice) || Number(item.item?.price) || 0, total: Number(item.totalPrice) || Number(item.item?.price) || 0, detail: item.type === "flight" ? "Flight fare" : "Admission" };
+  return { fullPrice: parsePrice(item.totalPrice) || parsePrice(item.item?.price), total: parsePrice(item.totalPrice) || parsePrice(item.item?.price), detail: item.type === "flight" ? "Flight fare" : "Admission" };
 }
 
 export default function CheckoutPage() {

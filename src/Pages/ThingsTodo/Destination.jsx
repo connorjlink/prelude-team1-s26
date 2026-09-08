@@ -8,6 +8,7 @@ import "./thingsTodo.css";
 import { useSelector } from "react-redux";
 import { useToast } from "@chakra-ui/react";
 import { addCartItem } from "../../utils/cart";
+import { parsePrice } from "../../utils/currency";
 
 export const Destination = () => {
   const [places, setPlaces] = useState([]);
@@ -45,8 +46,8 @@ export const Destination = () => {
         type: "attraction",
         itemId: item.id,
         title: item.title,
-        item,
-        totalPrice: Number(item.price) || 0,
+        item: { ...item, price: parsePrice(item.price) },
+        totalPrice: parsePrice(item.price),
       });
       toast({ title: "Attraction added to cart", status: "success", duration: 3000, isClosable: true });
     } catch (error) {

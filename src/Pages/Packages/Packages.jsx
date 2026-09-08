@@ -8,6 +8,7 @@ import {
   packageService,
 } from "../../01_firebase/firestore";
 import { addCartItem } from "../../utils/cart";
+import { parsePrice } from "../../utils/currency";
 import "./packages.css";
 
 export default function Packages() {
@@ -50,7 +51,7 @@ export default function Packages() {
     const flight = getFlight(item.flightId);
     const hotel = getHotel(item.hotelId);
     const nights = Math.max(1, Math.round((new Date(item.returnDate) - new Date(item.departureDate)) / 86400000));
-    const fullPrice = (Number(flight?.price) || 0) + ((Number(hotel?.price) || 0) * nights);
+    const fullPrice = parsePrice(flight?.price) + (parsePrice(hotel?.price) * nights);
     const discountedPrice = fullPrice * (1 - (Number(item.discountPercentage) || 0) / 100);
     try {
       await addCartItem(activeUser, {

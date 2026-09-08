@@ -4,7 +4,7 @@ import { DeleteHotel, fetchingHotels } from "../../Redux/StayReducer/action";
 import "./StayData.css";
 import Sidebar from "./Sidebar";
 import Pagination from "./Pagination";
-import { formatCurrency } from "../../utils/currency";
+import { formatCurrency, parsePrice } from "../../utils/currency";
 import { Link } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 import { addCartItem } from "../../utils/cart";
@@ -60,9 +60,9 @@ const StayData = () => {
         type: "hotel",
         itemId: hotel.id,
         title: hotel.name,
-        item: hotel,
+        item: { ...hotel, price: parsePrice(hotel.price) },
         nights: 1,
-        totalPrice: Number(hotel.price) || 0,
+        totalPrice: parsePrice(hotel.price),
       });
       toast({ title: "Stay added to cart", status: "success", duration: 3000, isClosable: true });
     } catch (error) {
@@ -79,8 +79,17 @@ const StayData = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedPriceRange, sortOptions]);
+    if (data) {
+      setFilteredHotel(
+        data.filter(
+          (hotel) => {
+            const p = parsePrice(hotel.price);
+            return p >= selectedPriceRange[0] && p <= selectedPriceRange[1];
+          }
+        )
+      );
+    }
+  }, [data, selectedPriceRange]);
 
   useEffect(() => {
     if (currentPage > totalNumOfPages) setCurrentPage(totalNumOfPages);

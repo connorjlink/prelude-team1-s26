@@ -2,7 +2,7 @@ import { Box, Image, Flex, Button } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { formatCurrency } from "../../utils/currency";
+import { formatCurrency, parsePrice } from "../../utils/currency";
 import { addCartItem } from "../../utils/cart";
 
 export default function FlightCard({ data }) {
@@ -17,8 +17,8 @@ export default function FlightCard({ data }) {
         type: "flight",
         itemId: id,
         title: `${from} to ${to}`,
-        item: data,
-        totalPrice: Number(price) || 0,
+        item: { ...data, price: parsePrice(price) },
+        totalPrice: parsePrice(price),
       });
       toast({ title: "Flight added to cart", status: "success", duration: 3000, isClosable: true });
       navigate("/checkout");

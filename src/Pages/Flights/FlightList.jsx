@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FlightCard from "./FlightCard";
 import { flightService } from "../../01_firebase/firestore";
+import { parsePrice } from "../../utils/currency";
 
 export default function FlightList({ page, priceValue, from, to }) {
   const [data, setData] = useState([]);
@@ -23,7 +24,7 @@ export default function FlightList({ page, priceValue, from, to }) {
         const minimumPrice = Math.max(0, (Number(priceValue) - 2) * 1000);
         const maximumPrice = Number(priceValue) * 1000;
         const matchingFlights = flights.filter((flight) => {
-          const price = Number(flight.price) || 0;
+          const price = parsePrice(flight.price);
           return price >= minimumPrice && price <= maximumPrice;
         });
         const start = (page - 1) * pageSize;
