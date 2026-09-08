@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteHotel, fetchingHotels } from "../../Redux/StayReducer/action";
 import "./StayData.css";
@@ -14,12 +14,35 @@ const StayData = () => {
   const toast = useToast();
   const activeUser = useSelector((store) => store.LoginReducer.activeUser);
   const { data } = useSelector((store) => store.StayReducer);
-  const [selectedPriceRange] = useState([0, 10000]);
-  const [filteredHotel, setFilteredHotel] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([0, 25000]);
+  const [sortOptions, setSortOptions] = useState({ sort: "", order: "asc" });
   const pageSize = 20;
+
+  const handlePriceRangeChange = (range) => {
+    if (!Array.isArray(range) || range.length !== 2) return;
+    const normalizedRange = range.map(Number);
+    if (normalizedRange.every(Number.isFinite)) {
+      setSelectedPriceRange(normalizedRange);
+    }
+  };
 
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
+  const filteredHotel = useMemo(() => {
+    const [minimumPrice, maximumPrice] = selectedPriceRange;
+    const hotelsInRange = (data || []).filter((hotel) => {
+      const price = Number(hotel.price);
+      return Number.isFinite(price) && price >= minimumPrice && price <= maximumPrice;
+    });
+
+    if (!sortOptions.sort) return hotelsInRange;
+
+    return [...hotelsInRange].sort((firstHotel, secondHotel) => {
+      const firstValue = Number(firstHotel[sortOptions.sort]) || 0;
+      const secondValue = Number(secondHotel[sortOptions.sort]) || 0;
+      return (firstValue - secondValue) * (sortOptions.order === "desc" ? -1 : 1);
+    });
+  }, [data, selectedPriceRange, sortOptions]);
   const totalNumOfPages = Math.max(1, Math.ceil(filteredHotel.length / pageSize));
 
 
@@ -56,16 +79,8 @@ const StayData = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (data) {
-      setFilteredHotel(
-        data.filter(
-          (hotel) =>
-            hotel.price >= selectedPriceRange[0] &&
-            hotel.price <= selectedPriceRange[1]
-        )
-      );
-    }
-  }, [data, selectedPriceRange]);
+    setCurrentPage(1);
+  }, [selectedPriceRange, sortOptions]);
 
   useEffect(() => {
     if (currentPage > totalNumOfPages) setCurrentPage(totalNumOfPages);
@@ -88,7 +103,10 @@ const StayData = () => {
       </div>
       <div className="stay-catalog-content">
        <div className="sidebar-container">
-        <Sidebar/>
+        <Sidebar
+          onSortChange={setSortOptions}
+          onPriceRangeChange={handlePriceRangeChange}
+        />
        </div>
 
        <div className="stay-results">
@@ -111,7 +129,7 @@ const StayData = () => {
                 </div>
                 <div className="stay-rating">
                   <span>Rating</span>
-                  <p>{hotel.rating ? hotel.rating : 1}/10</p>
+                  <p>{hotel.rating ? hotel.rating : 1}/5</p>
                 </div>
               </div>
               <button className="catalog-action stay-cart-button" type="button" onClick={() => handleAddToCart(hotel)}>

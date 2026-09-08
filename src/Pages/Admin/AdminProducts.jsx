@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./adminProduct.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
 import "font-awesome/css/font-awesome.min.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -14,8 +13,8 @@ import AdminNav from "./AdminNav";
 
 export const AdminProducts = () => {
   const dispatch = useDispatch();
-  const [limit, setLimit] = useState(5);
   const [editing, setEditing] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const { isLoading, data } = useSelector((store) => {
     return {
       isLoading: store.FlightReducer.isLoading,
@@ -37,22 +36,31 @@ export const AdminProducts = () => {
     });
   };
 
-  const handleLoadMore = () => {
-    if (data.length >= limit) {
-      setLimit((prev) => prev + 5);
-    }
-  };
-
   const saveFlight = (event) => {
     event.preventDefault();
     dispatch(updateFlight(editing.id, editing));
     setEditing(null);
   };
 
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+  const filteredFlights = data.filter((flight) =>
+    [
+      flight.airline,
+      flight.number,
+      flight.from,
+      flight.to,
+      flight.departure,
+      flight.arrival,
+      flight.price,
+    ].some((value) =>
+      String(value ?? "").toLowerCase().includes(normalizedSearchTerm)
+    )
+  );
+
   //   console.log(limit);
   useEffect(() => {
-    dispatch(fetchFlightProducts(limit));
-  }, [limit]);
+    dispatch(fetchFlightProducts());
+  }, [dispatch]);
 
   return (
     <>
@@ -61,19 +69,19 @@ export const AdminProducts = () => {
         <AdminNav />
         <div className="adminProductbox">
           <div className="filterProdcut">
-            <input placeholder="Search Flight" type="text" />
-            <button>Search</button>
-            {limit > data.length ? (
-              ""
-            ) : (
-              <button onClick={handleLoadMore}>Load More</button>
-            )}
+            <input
+              placeholder="Search Flight"
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+            <button type="button">Search</button>
           </div>
           <div className="head"><h1>All Flights</h1></div>
           {/*  */}
           {isLoading ? <h1>Please wait...</h1> : ""}
-          {data.map((ele, i) => (
-            <div key={i} className="adminProductlist">
+          {filteredFlights.map((ele) => (
+            <div key={ele.id} className="adminProductlist">
               {editing?.id === ele.id ? (
                 <form className="admin-edit-form" onSubmit={saveFlight}>
                   {["airline", "from", "to", "price", "number"].map((field) => (

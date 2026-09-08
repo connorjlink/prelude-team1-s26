@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./adminProduct.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
 import "font-awesome/css/font-awesome.min.css";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
@@ -11,8 +10,8 @@ import AdminNav from "./AdminNav";
 
 export const AllHotels = () => {
   const dispatch = useDispatch();
-  const [limit, setLimit] = useState(5);
   const [editing, setEditing] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const { isLoading, data } = useSelector((store) => {
     return {
       isLoading: store.HotelReducer.isLoading,
@@ -36,23 +35,28 @@ export const AllHotels = () => {
     });
   };
 
-  const handleLoadMore = () => {
-    if (data.length >= limit) {
-      setLimit((prev) => prev + 5);
-    }
-  };
-
   const saveHotel = (event) => {
     event.preventDefault();
     dispatch(updateHotel(editing.id, editing));
     setEditing(null);
   };
 
-  console.log(limit);
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+  const filteredHotels = data.filter((hotel) =>
+    [
+      hotel.name,
+      hotel.place,
+      hotel.location,
+      hotel.description,
+      hotel.price,
+    ].some((value) =>
+      String(value ?? "").toLowerCase().includes(normalizedSearchTerm)
+    )
+  );
 
   useEffect(() => {
-    dispatch(fetchingHotels(limit));
-  }, [limit]);
+    dispatch(fetchingHotels());
+  }, [dispatch]);
 
   return (
     <>
@@ -61,20 +65,20 @@ export const AllHotels = () => {
         <AdminNav />
         <div className="adminProductbox">
           <div className="filterProdcut">
-            <input placeholder="Search Flight" type="text" />
-            <button>Search</button>
-            {limit > data.length ? (
-              ""
-            ) : (
-              <button onClick={handleLoadMore}>Load More</button>
-            )}
+            <input
+              placeholder="Search Hotels"
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+            <button type="button">Search</button>
           </div>
           <div className="head"><h1>All Hotels</h1></div>
 
           {/*  */}
           {isLoading ? <h1>Please wait...</h1> : ""}
-          {data.map((ele, i) => (
-            <div key={i} className="adminProductlist">
+          {filteredHotels.map((ele) => (
+            <div key={ele.id} className="adminProductlist">
              {editing?.id === ele.id ? (
                <form className="admin-edit-form" onSubmit={saveHotel}>
                  {["image", "name", "place", "price", "description", "additional"].map((field) => (

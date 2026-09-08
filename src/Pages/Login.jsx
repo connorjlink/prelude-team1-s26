@@ -20,9 +20,10 @@ const state = {
 
 export const Login = () => {
   const [check, setCheck] = useState(state);
+  const [confirmationResult, setConfirmationResult] = useState(null);
   const recaptchaVerifierRef = useRef(null);
   const recaptchaContainerRef = useRef(null);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth, activeUser, user } = useSelector((store) => {
     return {
@@ -53,10 +54,15 @@ export const Login = () => {
     }
 
     recaptchaVerifierRef.current = new RecaptchaVerifier(
-      recaptchaContainerRef.current,
+      "recaptcha-container",
       {
-        size: "normal",
-        callback: () => {},
+        size: "invisible",
+        callback: (response) => {
+          // reCAPTCHA solved
+        },
+        "expired-callback": () => {
+          // Handle expiration
+        }
       },
       auth
     );
@@ -65,82 +71,68 @@ export const Login = () => {
 
   async function handleVerifyNumber() {
     const nextButton = document.querySelector("#nextText");
-    nextButton.innerText = "Please wait...";
+    if (nextButton) nextButton.innerText = "Please wait...";
+
     const normalizedNumber = String(number).replace(/\D/g, "");
     const phoneNumber = `+1${normalizedNumber}`;
+
     if (number.length === 10) {
       let matchedUser = data.number ? data : null;
       try {
         matchedUser = matchedUser || await userService.getByPhone(normalizedNumber);
       } catch (error) {
-        console.error("Unable to find the user in Firestore.", error);
+        console.error("Unable to find user in Firestore.", error);
       }
+
       if (matchedUser) {
         data = matchedUser;
         try {
-          const confirmationResult = await signInWithPhoneNumber(
-            auth,
-            phoneNumber,
-            onCapture()
-          );
-          window.confirmationResult = confirmationResult;
-          setCheck({ ...check, verify: true });
-          document.querySelector(
-            "#loginMesageSuccess"
-          ).innerHTML = `Otp sent to ${number}!`;
-          document.querySelector("#loginMesageError").innerHTML = "";
-          nextButton.style.display = "none";
+          // Use the existing verifier ref directly
+          const verifier = recaptchaVerifierRef.current || onCapture();
+          const confirmation = await signInWithPhoneNumber(auth, phoneNumber, verifier);
+
+          setConfirmationResult(confirmation);
+
+          // Wait 500ms before toggling state to allow reCAPTCHA's internal animation/timers to complete cleanly
+          setTimeout(() => {
+            setCheck((prev) => ({ ...prev, verify: true }));
+          }, 500);
+
+          document.querySelector("#loginMesageSuccess").innerText = `OTP sent to ${number}!`;
+          document.querySelector("#loginMesageError").innerText = "";
         } catch (error) {
           console.error("Unable to send login OTP.", error);
-          nextButton.innerText = "Log In";
-          document.querySelector("#loginMesageError").innerHTML =
-            "Unable to send the verification code. Please try again.";
-          if (recaptchaVerifierRef.current) {
-            recaptchaVerifierRef.current.clear();
-            recaptchaVerifierRef.current = null;
-          }
+          if (nextButton) nextButton.innerText = "Log In";
+          document.querySelector("#loginMesageError").innerText =
+            "Unable to send verification code. Please try again.";
         }
       } else {
-        document.querySelector("#loginMesageSuccess").innerHTML = ``;
-        document.querySelector("#loginMesageError").innerHTML =
+        document.querySelector("#loginMesageError").innerText =
           "User does not exist. Please create an account.";
-          setInterval(() => {
-            window.location="/register"
-          }, 1000);
+        setTimeout(() => navigate("/register"), 1000);
       }
-      //
     } else {
-      nextButton.innerText = "Log In";
-      document.querySelector("#loginMesageSuccess").innerHTML = ``;
-      document.querySelector("#loginMesageError").innerHTML =
-        "Phone number is invalid!";
+      if (nextButton) nextButton.innerText = "Log In";
+      document.querySelector("#loginMesageError").innerText = "Phone number is invalid!";
     }
   }
 
   //
   function verifyCode() {
-    window.confirmationResult
+    if (!confirmationResult) return;
+
+    confirmationResult
       .confirm(otp)
       .then((result) => {
-        // User signed in successfully.
-        const user = result.user;
-
-        document.querySelector(
-          "#loginMesageSuccess"
-        ).innerHTML = `Verification successful`;
-        document.querySelector("#loginMesageError").innerHTML = "";
-
+        document.querySelector("#loginMesageSuccess").innerText = "Verification successful";
+        document.querySelector("#loginMesageError").innerText = "";
         dispatch(login_user(data));
-        // ...
       })
       .catch((error) => {
-        // User couldn't sign in (bad verification code?)
-        document.querySelector("#loginMesageSuccess").innerHTML = ``;
-        document.querySelector("#loginMesageError").innerHTML = "Invalid OTP";
-        // ...
+        document.querySelector("#loginMesageSuccess").innerText = "";
+        document.querySelector("#loginMesageError").innerText = "Invalid OTP";
       });
   }
-
   //
   const handleChangeMobile = (e) => {
     let val = e.target.value;
@@ -149,28 +141,61 @@ export const Login = () => {
   // console.log(isAuth)
 
   useEffect(() => {
-    dispatch(fetch_users);
     if (isAuth) {
-      window.location = "/";
+      navigate("/");
     }
-  }, [dispatch, isAuth]);
+  }, [isAuth, navigate]);
 
   useEffect(() => {
+    dispatch(fetch_users);
+
     const verifier = onCapture();
     verifier.render().catch((error) => {
       console.error("Unable to render login reCAPTCHA.", error);
     });
+
     return () => {
-    }
+      if (recaptchaVerifierRef.current) {
+        try {
+          recaptchaVerifierRef.current.clear();
+        } catch (e) {
+          // Silently ignore reCAPTCHA post-unmount style errors
+        }
+        recaptchaVerifierRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Global handler to swallow known reCAPTCHA internal cleanup errors
+    const handleGlobalError = (event) => {
+      const errorMsg = event?.error?.message || event?.message || "";
+      if (
+        errorMsg.includes("can't access property \"style\"") ||
+        errorMsg.includes("Cannot read properties of null (reading 'style')")
+      ) {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener("error", handleGlobalError, true);
+
+    return () => {
+      window.removeEventListener("error", handleGlobalError, true);
+    };
   }, []);
 
   return (
     <>
       <div className="mainLogin">
-        <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
+        {/* Add an inline style wrapper so reCAPTCHA cleanup finds its parent */}
+        <div style={{ minHeight: "78px" }}>
+          <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
+        </div>
         <div className="loginBx">
           <div className="loginHead">
-          <hr /><hr /><hr />
+            <hr /><hr /><hr />
             <h1>Login</h1>
           </div>
           <div className="loginInputB">

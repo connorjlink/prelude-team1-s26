@@ -1,77 +1,56 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { fetchingHotels } from "../../Redux/StayReducer/action";
-import { useDispatch } from "react-redux";
 import PriceSlider from "./PriceSlider";
 
-export const Sidebar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [order,setOrder] = React.useState("asc");
-  const [sort,setSort] = React.useState("");
-  const dispatch = useDispatch();
+export const Sidebar = ({
+  onSortChange = () => {},
+  onPriceRangeChange = () => {},
+}) => {
+ const [, setSearchParams] = useSearchParams();
 
-const handlePriceChange = (e) => {
-  const selectedOrder = e.target.value;
-  const selectedSort = "price";
-  setOrder(selectedOrder);
-  setSort(selectedSort);
-};
- 
-  const handleRatingChange = (e) => {
-    // setOrder(e.target.value);
-    const selectedOrder = e.target.value;
-    const selectedSort = "rating";
-    setOrder(selectedOrder);
-    setSort(selectedSort);
-  };
-
-  React.useEffect(() => {
-    let params = {};
-    sort && (params["_sort"] = sort);
-    order && (params["_order"] = order);
-    setSearchParams(params);
-
-    dispatch(fetchingHotels(sort, order,));
-  }, [sort, order]);
+ const handleSortChange = (sort, order) => {
+   setSearchParams({ _sort: sort, _order: order });
+   onSortChange({ sort, order });
+ };
 
   return (
     <div className="stay-filter">
       <h3>Sort and filter</h3>
-      <div className="stay-filter-group" onChange={handlePriceChange} >
+      <div className="stay-filter-group">
         <h4>Price</h4>
         <input
           type="radio"
           name="price"
-          value={"asc"}
-         
+          value="asc"
+          onChange={() => handleSortChange("price", "asc")}
         />
         <label>Low to High</label>
         <br />
         <input
           type="radio"
           name="price"
-          value={"desc"}
-          
+          value="desc"
+          onChange={() => handleSortChange("price", "desc")}
         />
         <label>High to Low</label>
       </div>
       <br />
       <br />
-      <div className="stay-filter-group" onChange={handleRatingChange}>
+      <div className="stay-filter-group">
         <h4>Rating</h4>
         <input
           type="radio"
           name="rating"
-          value={"asc"}
-         
+          value="asc"
+          onChange={() => handleSortChange("rating", "asc")}
         />
         <label>Low to High</label>
         <br />
         <input
           type="radio"
           name="rating"
-          value={"desc"}
-          
+          value="desc"
+          onChange={() => handleSortChange("rating", "desc")}
         />
         <label>High to Low</label>
       </div>
@@ -79,7 +58,7 @@ const handlePriceChange = (e) => {
       <br/>
       <br/>
       <div>
-        <PriceSlider />
+        <PriceSlider onPriceRangeChange={onPriceRangeChange} />
       </div>
     </div>
   );

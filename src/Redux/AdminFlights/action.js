@@ -52,11 +52,11 @@ export const addFlight = (payload) => async (dispatch) => {
 export const fetchFlightProducts = (limit) => async (dispatch) => {
   dispatch(flightRequest());
   try {
-    const data = await flightService.getAll({ limitN: limit || 50 });
+    const data = await flightService.getAll(limit ? { limitN: limit } : {});
     dispatch(fetch_flights_product(data));
   } catch (err) {
     axios
-      .get(`http://localhost:8080/flight?_limit=${limit}`)
+      .get(limit ? `http://localhost:8080/flight?_limit=${limit}` : "http://localhost:8080/flight")
       .then((res) => dispatch(fetch_flights_product(res.data)))
       .catch(() => dispatch(flightFailure()));
   }

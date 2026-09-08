@@ -2,12 +2,24 @@ import React, { useState } from "react";
 import "./PriceSlider.css";
 import { formatCurrency } from "../../utils/currency";
 
-const PriceSlider = () => {
- const [sliderValues, setSliderValues] = useState({ min: 130, max: 250 });
+const MIN_PRICE = 0;
+const MAX_PRICE = 25000;
+
+const PriceSlider = ({ onPriceRangeChange = () => {} }) => {
+ const [sliderValues, setSliderValues] = useState({
+   min: MIN_PRICE,
+   max: MAX_PRICE,
+ });
 
   const handleSliderChange = (event) => {
     const { name, value } = event.target;
-    setSliderValues({ ...sliderValues, [name]: parseInt(value, 10) });
+    const nextValue = Number(value);
+    const nextValues = {
+      min: name === "min" ? Math.min(nextValue, sliderValues.max) : sliderValues.min,
+      max: name === "max" ? Math.max(nextValue, sliderValues.min) : sliderValues.max,
+    };
+    setSliderValues(nextValues);
+    onPriceRangeChange([nextValues.min, nextValues.max]);
   };
 
   const formatSliderValue = (value) => formatCurrency(value);
@@ -22,8 +34,8 @@ const PriceSlider = () => {
           <p>Minimum Price</p>
           <input
             type="range"
-            min={130}
-            max={500}
+            min={MIN_PRICE}
+            max={MAX_PRICE}
             name="min"
             value={sliderValues.min}
             onChange={handleSliderChange}
@@ -37,8 +49,8 @@ const PriceSlider = () => {
           <p>Maximum Price</p>
           <input
             type="range"
-            min={sliderValues.min}
-            max={10000}
+            min={MIN_PRICE}
+            max={MAX_PRICE}
             name="max"
             value={sliderValues.max}
             onChange={handleSliderChange}

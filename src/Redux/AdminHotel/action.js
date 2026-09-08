@@ -53,11 +53,11 @@ export const addHotel = (payload) => async (dispatch) => {
 
 export const fetchingHotels = (limit) => async (dispatch) => {
   try {
-    const data = await hotelService.getAll({ limitN: limit || 50 });
+    const data = await hotelService.getAll(limit ? { limitN: limit } : {});
     dispatch(fetch_hotel(data));
   } catch (err) {
     axios
-      .get(`http://localhost:8080/hotel?_limit=${limit}`)
+      .get(limit ? `http://localhost:8080/hotel?_limit=${limit}` : "http://localhost:8080/hotel")
       .then((res) => dispatch(fetch_hotel(res.data)))
       .catch((e) => console.log(e));
   }
