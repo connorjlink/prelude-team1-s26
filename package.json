@@ -36,7 +36,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "seed": "node src/01_firebase/seed.js",
+    "seed:dry": "node src/01_firebase/seed.js --dry-run",
+    "seed:skip": "node src/01_firebase/seed.js --skip-existing",
+    "seed:clean": "node src/01_firebase/seed.js --clean"
   },
   "eslintConfig": {
     "extends": [

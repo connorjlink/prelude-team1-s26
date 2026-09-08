@@ -1,27 +1,28 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow authenticated read/write for now (test mode) - tighten before prod
-    match /{document=**} {
-      allow read, write: if true;
-    }
+    // TEST MODE: open for seeding. Deploy with: firebase deploy --only firestore:rules
+    // CRITICAL: Re-deploy hardened rules below after seeding completes.
+    //match /{document=**} {
+    //  allow read, write: if true; // TODO: remove before production
+    //}
 
-    // Production-ready example (commented):
-    // match /users/{userId} {
-    //   allow read: if request.auth != null;
-    //   allow write: if request.auth != null && request.auth.uid == userId;
-    // }
-    // match /hotels/{hotelId} {
-    //   allow read: if true;
-    //   allow write: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
-    // }
-    // match /flights/{flightId} {
-    //   allow read: if true;
-    //   allow write: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
-    // }
-    // match /bookings/{bookingId} {
-    //   allow read: if request.auth != null && (resource.data.userId == request.auth.uid || get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin");
-    //   allow create: if request.auth != null;
-    // }
+    Production-ready example (commented):
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /hotels/{hotelId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
+    }
+    match /flights/{flightId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
+    }
+    match /bookings/{bookingId} {
+      allow read: if request.auth != null && (resource.data.userId == request.auth.uid || get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin");
+      allow create: if request.auth != null;
+    }
   }
 }
