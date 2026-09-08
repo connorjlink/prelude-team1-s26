@@ -18,7 +18,7 @@ Built by a team of four: **Alec Moore, Chris Lopez, Connor Link, and Connor Moro
 - JSON-Server
 - Firebase (Firestore)
 
-**Key dependencies:** Axios, redux, react-redux, redux-thunk, Chakra UI, firebase, font-awesome, json-server, react-router-dom, better-react-carousel.
+**Key dependencies:** Axios, redux, react-redux, redux-thunk, Chakra UI, firebase, font-awesome, json-server, react-router-dom.
 
 ## Features
 
