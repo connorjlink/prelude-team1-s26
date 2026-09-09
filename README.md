@@ -83,13 +83,13 @@ Open the website in your browser:
 This project is run via local deployment only. Start it with `npm start` and open `http://localhost:3000/`. There is no public hosted URL. Run `npm run build` to rebuild an optimized copy able to be tested without the React development server running.
 
 Below are the registration (signup) and login pages:
-![Login](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Login_Signup_Page.png)
+![Login](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/raw/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Login_Signup_Page.png)
 
 Below is a screenshot of the hotels finder catalog page:
-![Hotels](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Stays.png)
+![Hotels](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/raw/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Stays.png)
 
 Below is the flights finder catalog page:
-![Flight](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Flights.png)
+![Flight](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/raw/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Flights.png)
 
 Below is one of the administrator panel pages:
-![Admin](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Admin.png)
+![Admin](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/raw/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Admin.png)
