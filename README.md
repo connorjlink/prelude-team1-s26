@@ -1,10 +1,8 @@
 # Prelude
 
-## An AI-enhanced travel booking web app — search stays and flights, filter by price and rating, and book in a few clicks.
+## An travel booking web app for SE/CPRE 3290 Project Management. Search stays and flights, filter by price and rating, and book in a few clicks.
 
-Prelude is a full-stack travel booking application inspired by Expedia. It lets users browse hotels and flights, sort and filter results by price and rating, manage a cart, and complete bookings — backed by a Firebase (Firestore) data layer with a local JSON-Server fallback for development. It was originally cloned from an open-source Expedia clone and then restyled and extended by our team with a new UI, a Firebase backend, and additional features.
-
-**Keywords:** Expedia clone, React travel app, hotel booking, flight search, Firebase, Firestore, Redux, JSON-Server, travel booking website.
+Prelude is a full-stack travel booking application inspired by Expedia. It lets users browse hotels and flights, sort and filter results by price and rating, manage a cart, and complete bookings, backed by a Firebase (Firestore) data layer with a local JSON-Server fallback for development. It was originally cloned from an open-source Expedia clone and then restyled and extended by the team with a new UI, a Firebase backend, and additional features.
 
 Built by a team of four: **Alec Moore, Chris Lopez, Connor Link, and Connor Moroney.**
 
@@ -47,6 +45,9 @@ Install the dependencies:
 Start the server:
 > npm start
 
+(Optional: for local deployments without Firebase/Firestore only) Start JSON-Server:
+> npm run server
+
 Open the website in your browser:
 > http://localhost:3000/
 
@@ -56,19 +57,14 @@ Open the website in your browser:
    project prelude-2c284). Enable Firestore in Test Mode if     
    prompted; rules file is firestore.rules:1                    
 2. Config: src/01_firebase/config_firebase.js:9 already has     
-   projectId; no env needed for test run. To use your own       
-   project, replace firebaseConfig                              
+   projectId; to use a custom development project, replace firebaseConfig                              
 3. Verify SDK: firebase@^9.19.0 already in package.json:16 -    
    just npm install                                             
 4. Seed DB (one-time): copies db.json -> collections users/     
    hotels/flights/giftcards + admins + bookings                 
-   node src/01_firebase/seed.js                                 
-   # or: npm run seed  (if script added)                        
-   # verify in Firebase Console > Firestore Data                
-   Note Node ESM requires type: module or node --experimental-  
-   modules                                                      
-5. Local dev without Firestore: app falls back to npm run       
-   server (json-server at http://localhost:8080) - Firestore    
+   `node src/01_firebase/seed.js`
+5. Local dev without Firestore: app falls back to `npm run server` 
+(json-server at http://localhost:8080) - Firestore    
    errors silently fallback via try/catch in actions            
 6. Use in code:                                                 
    import { hotelService } from "./01_firebase/firestore";      
@@ -84,20 +80,16 @@ Open the website in your browser:
 
 ## Deployment
 
-This project is run via **local deployment** only. Start it with `npm start` and open `http://localhost:3000/`. There is no public hosted URL.
+This project is run via local deployment only. Start it with `npm start` and open `http://localhost:3000/`. There is no public hosted URL. Run `npm run build` to rebuild an optimized copy able to be tested without the React development server running.
 
-This is Login and Signup pages:-
-![login](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Login_Signup_Page.png)
+Below are the registration (signup) and login pages:
+![Login](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Login_Signup_Page.png)
 
+Below is a screenshot of the hotels finder catalog page:
+![Hotels](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Stays.png)
 
-This is the Stays Page:-
-![stays](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Stays.png)
-
-
-This is the Flight Page:-
+Below is the flights finder catalog page:
 ![Flight](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Flights.png)
 
-
-This is the Admin Page:-
+Below is one of the administrator panel pages:
 ![Admin](https://git.ece.iastate.edu/clink1/prelude-team1-s26/-/blob/efd2f1806e315c5954f2abbe421c750bbdcfe7e9/Admin.png)
-
